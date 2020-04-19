@@ -2,6 +2,8 @@ const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 
+const products = require('./routes/api/products');
+
 const app = express();
 
 //Bodyparser midlewear
@@ -14,6 +16,9 @@ const db = require('./config/keys').mongoURI;
 mongoose.connect(db)
     .then(() => console.log('MongoDB connected'))
     .catch(err => console.log(err));
+
+// Use routes
+app.use('/api/products', products);
 
 const port = process.env.PORT || 5000;
 
