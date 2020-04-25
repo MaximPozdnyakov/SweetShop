@@ -1,19 +1,23 @@
 const express = require('express');
 const mongoose = require('mongoose');
-const bodyParser = require('body-parser');
+const dotenv = require('dotenv');
+
+
+dotenv.config({ path: './config/config.env' });
 
 const products = require('./routes/api/products');
 
 const app = express();
 
 //Bodyparser midlewear
-app.use(bodyParser.json());
-
-//DB config
-const db = require('./config/keys').mongoURI;
+app.use(express.json());
 
 //Connect to mongo
-mongoose.connect(db)
+mongoose.connect( process.env.mongoURI, {
+    useNewUrlParser: true,
+    useCreateIndex: true,
+    useUnifiedTopology: true
+})
     .then(() => console.log('MongoDB connected'))
     .catch(err => console.log(err));
 
