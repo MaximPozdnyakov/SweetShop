@@ -5,7 +5,7 @@ const dotenv = require("dotenv");
 dotenv.config({ path: "./config/config.env" });
 
 const products = require("./routes/api/products");
-const card = require("./routes/api/card");
+const cart = require("./routes/api/cart");
 
 const app = express();
 
@@ -24,7 +24,7 @@ mongoose
 
 // Use routes
 app.use("/api/products", products);
-app.use("/api/card", card);
+app.use("/api/cart", cart);
 
 const port = process.env.PORT || 5000;
 
