@@ -13,4 +13,18 @@ router.get("/", (req, res) => {
         .catch((err) => console.log(err));
 });
 
+// // @route   POST api/products
+// // @desc    post new Product
+// // @access  Private
+// router.post('/', (req, res) => {
+//     const newProduct = new Product({
+//         title: req.body.title,
+//         category: req.body.category,
+//         price: req.body.price,
+//         imgName: req.body.imgName
+//     });
+
+//     newProduct.save().then(product => res.json(product))
+// })
+
 module.exports = router;

@@ -15,13 +15,8 @@ function Card(props) {
                     <span>${props.price}</span>
                 </div>
                 <div className="card-footer">
-                    <a
-                        href="/"
-                        className="btn btn-primary"
-                        title={props.title}
-                        price={props.price}
-                    >
-                        Add To Cart
+                    <a href="/" className="btn btn-primary">
+                        <i class="fas fa-cart-plus"></i>
                     </a>
                 </div>
             </div>
