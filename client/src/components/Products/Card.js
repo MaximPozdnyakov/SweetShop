@@ -1,11 +1,12 @@
 import React, { useContext } from "react";
 
-import CartContext from "../../context/Cart/CartContext";
+import { CartContext } from "../../context/Cart/CartContext";
 
 function Card(props) {
-    // const { cartItems } = useContext();
+    const { cartItems, addItem, deleteItemById } = useContext(CartContext);
 
-    // const isAdded =
+    const isAdded = cartItems.find((item) => item._id === props._id);
+
     return (
         <div className="col-xl-3 col-md-4 col-sm-6 col-12 mb-4">
             <div className="card">
@@ -28,8 +29,23 @@ function Card(props) {
                             right: "0",
                             bottom: "76px",
                         }}
+                        onClick={(e) => {
+                            e.preventDefault();
+                            isAdded
+                                ? deleteItemById(props._id)
+                                : addItem({
+                                      _id: props._id,
+                                      title: props.title,
+                                      price: props.price,
+                                      srcToImg: props.srcToImg,
+                                  });
+                        }}
                     >
-                        <i class="fas fa-cart-plus"></i>
+                        {isAdded ? (
+                            <i className="fas fa-check"></i>
+                        ) : (
+                            <i className="fas fa-cart-plus"></i>
+                        )}
                     </a>
                 </div>
             </div>

@@ -22,6 +22,7 @@ router.get("/", async (req, res) => {
 router.post("/", async (req, res) => {
     try {
         const newCartItem = new CartItem({
+            _id: req.body.id,
             title: req.body.title,
             price: req.body.price,
             srcToImg: req.body.srcToImg,
