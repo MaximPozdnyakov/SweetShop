@@ -20,21 +20,29 @@ function CartItem(props) {
         />
       </th>
       <td>
-        <h2>{title}</h2>
+        <h4 style={{ whiteSpace: 'nowrap' }}>{title}</h4>
       </td>
       <td>
-        <h2 className="text-success">{price}</h2>
+        <h4 className="text-success">$ {price}</h4>
       </td>
       <td>
         <div className="form-group">
-          <input
-            type="text"
-            value={state}
-            onChange={(e) => {
-              setState(e.target.value);
-              updateQuantityOfItemById(id, e.target.value);
-            }}
-          ></input>
+          <select
+            className="form-control custom-select"
+            id="exampleFormControlSelect1"
+            style={{ width: 'max-content' }}
+          >
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+            <option value="8">8</option>
+            <option value="9">9</option>
+            <option>10+</option>
+          </select>
         </div>
       </td>
       <td>

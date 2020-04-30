@@ -19,16 +19,7 @@ export default function ListOfCardItems() {
   ));
 
   return (
-    <table className="table">
-      <thead>
-        <tr>
-          <th></th>
-          <th>Title</th>
-          <th>Price</th>
-          <th>Amount</th>
-          <th>Delete</th>
-        </tr>
-      </thead>
+    <table className="table table-borderless col-8">
       <tbody>{cartItemsComponents}</tbody>
     </table>
   );

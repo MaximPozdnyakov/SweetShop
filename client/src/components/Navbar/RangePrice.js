@@ -8,8 +8,6 @@ function RangePrice() {
     toPrice: '',
   });
 
-  console.log(state);
-
   const { fromPrice, toPrice } = state;
 
   const { allProducts, filterByPrice } = useContext(ProductsContext);
