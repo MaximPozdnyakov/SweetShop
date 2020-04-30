@@ -66,6 +66,13 @@ export function ProductsProvider(props) {
     });
   }
 
+  function sortByDate() {
+    console.log('SortByDate');
+    dispatch({
+      type: 'SORT_DY_DATE',
+    });
+  }
+
   return (
     <ProductsContext.Provider
       value={{
@@ -78,6 +85,7 @@ export function ProductsProvider(props) {
         sortByPriceDec,
         filterByPrice,
         searchByTitle,
+        sortByDate,
       }}
     >
       {props.children}

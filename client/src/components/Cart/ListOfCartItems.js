@@ -5,8 +5,7 @@ import { CartContext } from '../../context/Cart/CartContext';
 import CartItem from './CartItem';
 
 export default function ListOfCardItems() {
-  const { cartItems, isCartLoaded } = useContext(CartContext);
-  console.log(cartItems);
+  const { cartItems } = useContext(CartContext);
 
   let cartItemsComponents = cartItems.map((item) => (
     <CartItem

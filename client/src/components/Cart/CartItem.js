@@ -4,12 +4,10 @@ import { CartContext } from '../../context/Cart/CartContext';
 
 function CartItem(props) {
   const { id, title, price, srcToImg, quantity } = props;
-  console.log('CartItem -> quantity', quantity);
 
   const [state, setState] = useState(quantity);
 
   const { updateQuantityOfItemById, deleteItemById } = useContext(CartContext);
-  console.log('CartItem -> deleteItemById', deleteItemById);
 
   return (
     <tr>

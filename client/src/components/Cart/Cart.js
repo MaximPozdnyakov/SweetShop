@@ -20,13 +20,13 @@ function Cart() {
           <Loader type="Oval" color="#00BFFF" height={200} width={200} />
         </div>
       ) : (
-        <div style={{ background: '#F7F8F9' }}>
-          <h1>My Cart</h1>
-          <section className="container d-flex justify-content-between">
+        <>
+          <section className="container">
+            <h1>My Cart</h1>
             <ListOfCartItems />
             <Total />
           </section>
-        </div>
+        </>
       )}
     </>
   );

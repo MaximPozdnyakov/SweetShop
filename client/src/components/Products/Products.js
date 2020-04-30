@@ -1,6 +1,5 @@
 import React, { useContext } from 'react';
 
-import Search from './Search';
 import Card from './Card';
 import { ProductsContext } from '../../context/Products/ProductsContext';
 
@@ -22,7 +21,7 @@ function Products() {
   ));
 
   return (
-    <main style={{ background: '#F7F8F9' }}>
+    <main>
       {!isProductsLoaded ? (
         <div
           className="container justify-content-center d-flex align-items-center"
@@ -33,7 +32,6 @@ function Products() {
       ) : (
         <>
           <h1 className="text-center my-5 color-primary">{header}</h1>
-          <Search />
           <div className="row col-xl-10 col-md-12 mx-auto">{cards}</div>
         </>
       )}
