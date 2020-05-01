@@ -1,13 +1,12 @@
 import React, { useState, useContext } from 'react';
 
 import { CartContext } from '../../context/Cart/CartContext';
+import QuantityOfItem from './QuantityOfItem';
 
 function CartItem(props) {
-  const { id, title, price, srcToImg, quantity } = props;
+  const { id, title, price, srcToImg } = props;
 
-  const [state, setState] = useState(quantity);
-
-  const { updateQuantityOfItemById, deleteItemById } = useContext(CartContext);
+  const { deleteItemById, updateQuantityOfItemById } = useContext(CartContext);
 
   return (
     <tr>
@@ -15,7 +14,7 @@ function CartItem(props) {
         <img
           src={srcToImg}
           className="mr-3"
-          style={{ width: '100px' }}
+          style={{ width: '100px', height: '100px' }}
           alt="..."
         />
       </th>
@@ -26,29 +25,13 @@ function CartItem(props) {
         <h4 className="text-success">$ {price}</h4>
       </td>
       <td>
-        <div className="form-group">
-          <select
-            className="form-control custom-select"
-            id="exampleFormControlSelect1"
-            style={{ width: 'max-content' }}
-          >
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-            <option value="4">4</option>
-            <option value="5">5</option>
-            <option value="6">6</option>
-            <option value="7">7</option>
-            <option value="8">8</option>
-            <option value="9">9</option>
-            <option>10+</option>
-          </select>
-        </div>
+        <QuantityOfItem id={id} key={id} />
       </td>
       <td>
         <a
           className="btn btn-danger text-white"
           onClick={() => {
+            updateQuantityOfItemById(id, 0);
             deleteItemById(id);
           }}
         >
