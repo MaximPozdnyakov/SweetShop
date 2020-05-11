@@ -31,6 +31,11 @@ function Navbar() {
               <Category />
               <Price />
               <li className="nav-item">
+                <a className="nav-link" href="/">
+                  Clear
+                </a>
+              </li>
+              <li className="nav-item mx-5">
                 <Link
                   to="/cart"
                   className="btn btn-secondary  ml-md-3 ml-1 my-2"

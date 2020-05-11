@@ -29,7 +29,7 @@ export function ProductsProvider(props) {
         });
       })
       .catch((err) => {
-        getProducts();
+        console.log(err);
       });
   }
 

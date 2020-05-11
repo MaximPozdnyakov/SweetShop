@@ -15,16 +15,16 @@ function ProductPage(props) {
   const isAdded = cartItems.find((item) => item._id === id);
 
   return (
-    <div className="mt-5 mx-auto col-6 row">
-      <img src={srcToImg} alt="..." className="col-6" />
-      <div className="col-6 d-flex flex-column  justify-content-between text-center">
-        <div>
+    <div className="mt-5 mx-auto col-xl-6 col-lg-8 col-12 row">
+      <img src={srcToImg} alt="..." className="col-sm-6 col-12" />
+      <div className="col-sm-6 d-flex flex-column  justify-content-between text-center">
+        <div className="my-3">
           <h2 style={{ lineHeight: '1.5em' }}>{title}</h2>
           <h4 className="text-success">${price}</h4>
         </div>
 
         <button
-          className="btn btn-primary"
+          className="btn btn-primary my-3"
           onClick={(e) => {
             e.preventDefault();
             isAdded
@@ -37,12 +37,12 @@ function ProductPage(props) {
                 });
           }}
         >
-          {isAdded ? <>ITEM IS ADDED TO CART</> : <>ADD TO CART</>}
+          {isAdded ? <>REMOVE ITEM FROM CART</> : <>ADD TO CART</>}
         </button>
-        <Link to="/" className="btn btn-primary">
+        <Link to="/" className="btn btn-primary my-3">
           CONTINUE SHOPPING
         </Link>
-        <Link to="/cart" className="btn btn-primary">
+        <Link to="/cart" className="btn btn-primary my-3">
           GO TO CART
         </Link>
       </div>

@@ -3,7 +3,7 @@ import React from 'react';
 function OrderForm() {
   return (
     <form>
-      <fieldset>
+      {/* <fieldset>
         <legend>Your Data</legend>
         <div class="form-group row">
           <label for="staticEmail" class="col-sm-2 col-form-label">
@@ -45,7 +45,7 @@ function OrderForm() {
         <button type="submit" class="btn btn-primary">
           Submit
         </button>
-      </fieldset>
+      </fieldset> */}
     </form>
   );
 }

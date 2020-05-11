@@ -25,8 +25,8 @@ export function CartProvider(props) {
         type: 'GET_ALL_ITEMS',
         payload: cartItems.data,
       });
-    } catch {
-      getCartItems();
+    } catch (err) {
+      console.log(err);
     }
   }
 
