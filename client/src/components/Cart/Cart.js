@@ -6,6 +6,7 @@ import Total from './Total';
 import { CartContext } from '../../context/Cart/CartContext';
 
 import Loader from 'react-loader-spinner';
+import OrderForm from './OrderForm';
 
 function Cart() {
   const { isCartLoaded, cartItems } = useContext(CartContext);
@@ -20,19 +21,25 @@ function Cart() {
           <Loader type="Oval" color="#00BFFF" height={200} width={200} />
         </div>
       ) : (
-        <>
+        <div className="px-3">
           {!cartItems.length ? (
-            <h1 className="m-5 font-weight-bold">Your Cart Is Empty</h1>
+            <h1 className="m-sm-5 mx-3 my-5 font-weight-bold">
+              Your Cart Is Empty
+            </h1>
           ) : (
             <>
-              <h1 className="m-5 font-weight-bold">Your Cart</h1>
-              <section className="mx-5 row">
+              <h1 className="m-sm-5 m-3 font-weight-bold">Your Cart</h1>
+              <section className="mx-sm-5 m-3 row">
                 <ListOfCartItems />
                 <Total />
               </section>
+              <section>
+                <h1 className="m-sm-5 m-3">Your Data</h1>
+                <OrderForm />
+              </section>
             </>
           )}
-        </>
+        </div>
       )}
     </>
   );

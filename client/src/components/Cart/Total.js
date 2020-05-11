@@ -17,7 +17,7 @@ function Total() {
 
   return (
     <div
-      className="border p-5 text-center col-4"
+      className="border p-5 text-center mx-auto col-xl-4 col-md-6"
       style={{ height: 'min-content' }}
     >
       <div className="d-flex justify-content-between mb-5">
@@ -28,7 +28,7 @@ function Total() {
         </div>
       </div>
       <a className="btn btn-success btn-lg text-white btn-block font-weight-bold">
-        Buy
+        BUY NOW
       </a>
     </div>
   );

@@ -18,9 +18,5 @@ export default function ListOfCardItems() {
     />
   ));
 
-  return (
-    <table className="table table-borderless col-8">
-      <tbody>{cartItemsComponents}</tbody>
-    </table>
-  );
+  return <div className="col-xl-8 col-12">{cartItemsComponents}</div>;
 }

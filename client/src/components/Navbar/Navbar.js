@@ -8,7 +8,7 @@ import Search from './Search';
 function Navbar() {
   return (
     <header>
-      <nav className="navbar navbar-expand-lg navbar-light bg-info">
+      <nav className="navbar navbar-expand-md navbar-dark bg-primary">
         <Link className="navbar-brand text-white mx-sm-5 mx-2" to="/">
           Sweet Shop
         </Link>
@@ -26,19 +26,21 @@ function Navbar() {
         </button>
 
         <div className="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul className="navbar-nav justify-content-between align-items-start navbar-collapse">
-            <li>
-              <ul className="navbar-nav">
-                <Category />
-                <Price />
-                <Search />
-              </ul>
-            </li>
-            <li className="nav-item">
-              <Link className="btn btn-primary my-2 mr-sm-5 ml-2" to="/cart">
-                My Cart
-              </Link>
-            </li>
+          <ul className="navbar-nav navbar-collapse justify-content-sm-between align-items-start">
+            <ul className="navbar-nav ml-sm-5 ml-2 ml-md-0 align-items-md-center">
+              <Category />
+              <Price />
+              <li className="nav-item">
+                <Link
+                  to="/cart"
+                  className="btn btn-secondary  ml-md-3 ml-1 my-2"
+                >
+                  My Cart
+                </Link>
+              </li>
+            </ul>
+
+            <Search />
           </ul>
         </div>
       </nav>

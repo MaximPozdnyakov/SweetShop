@@ -40,9 +40,11 @@ function RangePrice() {
   }, [minPrice, maxPrice]);
 
   return (
-    <div className="form-row m-2">
-      <div className="col">
+    <div className="form-row text-center mx-3">
+      <div className="col form-group">
+        <label htmlFor="inputFrom">From</label>
         <input
+          id="inputFrom"
           type="text"
           className="form-control form-control-sm"
           placeholder="From"
@@ -62,8 +64,10 @@ function RangePrice() {
         />
       </div>
       -
-      <div className="col">
+      <div className="col  form-group">
+        <label htmlFor="inputTo">To</label>
         <input
+          id="inputTo"
           type="text"
           className="form-control form-control-sm"
           placeholder="To"

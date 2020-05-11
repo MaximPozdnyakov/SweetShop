@@ -26,7 +26,7 @@ function SortPrice() {
 
   return (
     <>
-      <div className="form-check m-2">
+      <div className="form-check my-2 mx-3">
         <input
           className="form-check-input"
           type="checkbox"
@@ -42,7 +42,7 @@ function SortPrice() {
         </label>
       </div>
 
-      <div className="form-check m-2">
+      <div className="form-check my-2 mx-3">
         <input
           className="form-check-input"
           type="checkbox"

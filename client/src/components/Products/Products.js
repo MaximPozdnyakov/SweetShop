@@ -31,7 +31,7 @@ function Products() {
         </div>
       ) : (
         <>
-          <h1 className="text-center my-5 font-weight-bold">{header}</h1>
+          <h1 className="text-center my-5">{header}</h1>
           <div className="row col-xl-10 col-md-12 mx-auto">{cards}</div>
         </>
       )}

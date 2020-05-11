@@ -12,7 +12,7 @@ function QuantityOfItem(props) {
   );
 
   return (
-    <div className="form-group">
+    <div className="">
       {quantity > 9 ? (
         <input
           type="text"
@@ -24,8 +24,7 @@ function QuantityOfItem(props) {
             updateQuantityOfItemById(id, quantity);
           }}
           autoFocus={true}
-          className="form-control"
-          style={{ width: 'max-content' }}
+          className="form-control "
         />
       ) : (
         <select
