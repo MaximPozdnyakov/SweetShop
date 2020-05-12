@@ -1,16 +1,26 @@
 import { Link } from 'react-router-dom';
-import React from 'react';
+import React, { useContext } from 'react';
 
 import Category from './Category';
 import Price from './Price';
 import Search from './Search';
+import { ProductsContext } from '../../context/Products/ProductsContext';
 
 function Navbar() {
+  const { clear } = useContext(ProductsContext);
+
   return (
     <header>
       <nav className="navbar navbar-expand-md navbar-dark bg-primary">
         <Link className="navbar-brand text-white mx-sm-5 mx-2" to="/">
           Sweet Shop
+        </Link>
+        <Link
+          className="nav-link active font-weight-bold d-md-none d-block text-white"
+          to="/cart"
+          style={{ fontSize: '1.2em' }}
+        >
+          <i className="fas fa-shopping-cart mr-1"></i>Cart
         </Link>
 
         <button
@@ -28,19 +38,26 @@ function Navbar() {
         <div className="collapse navbar-collapse" id="navbarSupportedContent">
           <ul className="navbar-nav navbar-collapse justify-content-sm-between align-items-start">
             <ul className="navbar-nav ml-sm-5 ml-2 ml-md-0 align-items-md-center">
+              <li className="nav-item mx-2 d-md-flex d-none">
+                <Link
+                  className="nav-link active font-weight-bold"
+                  to="/cart"
+                  style={{ fontSize: '1.2em' }}
+                >
+                  <i className="fas fa-shopping-cart mr-1"></i>Cart
+                </Link>
+              </li>
+              <li className="nav-item mx-2">
+                <Link className="nav-link active" to="/login">
+                  Login
+                </Link>
+              </li>
               <Category />
               <Price />
-              <li className="nav-item">
-                <a className="nav-link" href="/">
+
+              <li className="nav-item ml-2 my-sm-2">
+                <Link className="nav-link" to="/" onClick={clear}>
                   Clear
-                </a>
-              </li>
-              <li className="nav-item mx-5">
-                <Link
-                  to="/cart"
-                  className="btn btn-secondary  ml-md-3 ml-1 my-2"
-                >
-                  My Cart
                 </Link>
               </li>
             </ul>

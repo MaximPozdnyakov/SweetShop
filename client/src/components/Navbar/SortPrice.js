@@ -20,7 +20,7 @@ function SortPrice() {
     }
   }, [state.isDec]);
 
-  const { sortByDate, sortByPriceInc, sortByPriceDec } = useContext(
+  const { clear, sortByDate, sortByPriceInc, sortByPriceDec } = useContext(
     ProductsContext
   );
 
@@ -34,7 +34,7 @@ function SortPrice() {
           id="defaultCheck1"
           onChange={() => {
             setState({ isDec: state.isDec, isInc: !state.isInc });
-            !state.isInc ? sortByPriceInc() : sortByDate();
+            !state.isInc ? sortByPriceInc() : clear();
           }}
         />
         <label className="form-check-label" htmlFor="defaultCheck1">
@@ -50,7 +50,7 @@ function SortPrice() {
           id="defaultCheck1"
           onChange={(e) => {
             setState({ isDec: !state.isDec, isInc: state.isInc });
-            !state.isDec ? sortByPriceDec() : sortByDate();
+            !state.isDec ? sortByPriceDec() : clear();
           }}
         />
         <label className="form-check-label" htmlFor="defaultCheck1">

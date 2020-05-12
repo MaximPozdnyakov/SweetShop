@@ -56,6 +56,11 @@ export default (state, action) => {
         ),
         header: 'Search Results',
       };
+    case 'CLEAR':
+      return {
+        ...state,
+        displayedProducts: state.allProducts,
+      };
     default:
       return state;
   }

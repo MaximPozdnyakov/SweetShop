@@ -67,9 +67,14 @@ export function ProductsProvider(props) {
   }
 
   function sortByDate() {
-    console.log('SortByDate');
     dispatch({
       type: 'SORT_DY_DATE',
+    });
+  }
+
+  function clear() {
+    dispatch({
+      type: 'CLEAR',
     });
   }
 
@@ -86,6 +91,7 @@ export function ProductsProvider(props) {
         filterByPrice,
         searchByTitle,
         sortByDate,
+        clear,
       }}
     >
       {props.children}
