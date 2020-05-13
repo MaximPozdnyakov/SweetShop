@@ -25,7 +25,7 @@ function Login() {
         />
       </div>
       <button className="btn btn-primary btn-lg btn-block my-4">Login</button>
-      <Link to="/signup" class="btn btn-link btn-lg btn-block">
+      <Link to="/signup" className="btn btn-link btn-lg btn-block">
         Sign Up
       </Link>
     </form>

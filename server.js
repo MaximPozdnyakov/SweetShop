@@ -19,7 +19,7 @@ app.use(cors(corsOptions));
 
 const products = require("./routes/api/products");
 const cart = require("./routes/api/cart");
-const pay = require("./routes/pay");
+const users = require("./routes/api/users");
 
 //Connect to mongo
 mongoose
@@ -34,7 +34,7 @@ mongoose
 // Use routes
 app.use("/api/products", products);
 app.use("/api/cart", cart);
-// app.use("/pay", pay);
+app.use("/api/users", users);
 
 const port = process.env.PORT || 5000;
 
