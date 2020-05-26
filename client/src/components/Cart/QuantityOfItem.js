@@ -1,6 +1,6 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useContext } from "react";
 
-import { CartContext } from '../../context/Cart/CartContext';
+import { CartContext } from "../../context/Cart/CartContext";
 
 function QuantityOfItem(props) {
   const id = props.id;
@@ -30,7 +30,7 @@ function QuantityOfItem(props) {
         <select
           className="form-control custom-select"
           id="exampleFormControlSelect1"
-          style={{ width: 'max-content' }}
+          style={{ width: "max-content" }}
           value={quantity}
           onChange={(e) => {
             const selectedIndex = e.target.options.selectedIndex + 1;

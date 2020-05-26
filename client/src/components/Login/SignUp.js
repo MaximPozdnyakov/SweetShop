@@ -1,17 +1,16 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext } from "react";
 
-import { Link } from 'react-router-dom';
-import { UsersContext } from '../../context/Users/UsersContext';
+import { Link } from "react-router-dom";
+import { UsersContext } from "../../context/Users/UsersContext";
 
 function SignUp() {
   const [newUser, setNewUser] = useState({
-    email: '',
-    address: '',
-    password1: '',
-    password2: '',
+    email: "",
+    password1: "",
+    password2: "",
   });
 
-  const { email, address, password1, password2 } = newUser;
+  const { email, password1, password2 } = newUser;
 
   const [isValid, setIsValid] = useState({
     email: false,
@@ -43,17 +42,30 @@ function SignUp() {
       <legend className="font-weight-bold">SignUp</legend>
       <div
         className={`${
-          isValid.notEmpty ? 'd-none' : 'd-block'
+          isValid.notEmpty ? "d-none" : "d-block"
         } alert alert-dismissible alert-primary`}
       >
-        <strong>Please, enter all fields</strong>
+        Please, enter all fields
+        <button
+          onClick={() =>
+            setIsValid({
+              ...isValid,
+              notEmpty: true,
+            })
+          }
+          type="button"
+          className="close"
+          data-dismiss="alert"
+        >
+          &times;
+        </button>
       </div>
       <div className="form-group my-4 has-success has-danger">
         <label htmlFor="exampleInputEmail1">Email address</label>
         <input
           type="email"
           className={`form-control ${
-            email === '' ? '' : !isValid.email ? 'is-invalid' : 'is-valid'
+            email === "" ? "" : !isValid.email ? "is-invalid" : "is-valid"
           }`}
           id="exampleInputEmail1"
           placeholder="Enter your email"
@@ -61,7 +73,6 @@ function SignUp() {
           onChange={(e) => {
             setNewUser({
               email: e.target.value,
-              address,
               password1,
               password2,
             });
@@ -78,36 +89,17 @@ function SignUp() {
           Sorry, that email is taken or invalid. Try another?
         </div>
       </div>
-      <div className="form-group my-4  has-success has-danger">
-        <label htmlFor="inputName">Address</label>
-        <input
-          type="text"
-          className={`form-control`}
-          id="inputName"
-          placeholder="Enter your address"
-          value={address}
-          onChange={(e) => {
-            setNewUser({
-              email,
-              address: e.target.value,
-              password1,
-              password2,
-            });
-          }}
-        />
-        <div className="valid-feedback">Success!</div>
-      </div>
 
       <div className="form-group my-4  has-success has-danger">
         <label htmlFor="exampleInputPassword1">Password</label>
         <input
           type="password"
           className={`form-control ${
-            password1 === ''
-              ? ''
+            password1 === ""
+              ? ""
               : !isValid.password1
-              ? 'is-invalid'
-              : 'is-valid'
+              ? "is-invalid"
+              : "is-valid"
           }`}
           id="exampleInputPassword1"
           placeholder="Enter your password"
@@ -115,7 +107,6 @@ function SignUp() {
           onChange={(e) => {
             setNewUser({
               email,
-              address,
               password1: e.target.value,
               password2,
             });
@@ -139,11 +130,11 @@ function SignUp() {
         <input
           type="password"
           className={`form-control ${
-            password2 === ''
-              ? ''
+            password2 === ""
+              ? ""
               : !isValid.password2
-              ? 'is-invalid'
-              : 'is-valid'
+              ? "is-invalid"
+              : "is-valid"
           }`}
           id="exampleInputPassword2"
           placeholder="Repeat your password"
@@ -151,14 +142,13 @@ function SignUp() {
           onChange={(e) => {
             setNewUser({
               email,
-              address,
               password1,
               password2: e.target.value,
             });
             setIsValid({
               email: isValid.email,
               password1: isValid.password1,
-              password2: password1 == e.target.value,
+              password2: password1 === e.target.value,
               notEmpty: isValid.notEmpty,
             });
           }}
@@ -168,23 +158,13 @@ function SignUp() {
       </div>
       <Link
         to={`${
-          isValid.email &&
-          isValid.password1 &&
-          isValid.password2 &&
-          address !== ''
-            ? '/login'
-            : '/signup'
+          isValid.email && isValid.password1 && isValid.password2
+            ? "/login"
+            : "/signup"
         }`}
         className="btn btn-primary btn-lg btn-block my-4"
         onClick={() => {
-          if (
-            !(
-              isValid.email &&
-              isValid.password1 &&
-              isValid.password2 &&
-              address !== ''
-            )
-          ) {
+          if (!(isValid.email && isValid.password1 && isValid.password2)) {
             setIsValid({
               email: isValid.email,
               password1: isValid.password1,

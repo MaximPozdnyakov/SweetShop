@@ -1,17 +1,16 @@
-import React, { createContext, useEffect, useReducer } from 'react';
-import CartReducer from './CartReducer';
-import axios from 'axios';
+import React, { createContext, useEffect, useReducer } from "react";
+import axios from "axios";
+import CartReducer from "./CartReducer";
 
 export const CartContext = createContext();
 
 export function CartProvider(props) {
   const [cartState, dispatch] = useReducer(CartReducer, {
     isCartLoaded: false,
-    isPurchasePaid: false,
     cartItems: [],
   });
 
-  const { isCartLoaded, isPurchasePaid, cartItems } = cartState;
+  const { isCartLoaded, cartItems } = cartState;
 
   useEffect(() => {
     getCartItems();
@@ -20,10 +19,17 @@ export function CartProvider(props) {
 
   async function getCartItems() {
     try {
-      const cartItems = await axios.get('/api/cart');
+      const cartItems = await axios.get("/api/cart");
+      console.log(
+        cartItems.data.filter(
+          (cartItem) => cartItem.ownerId === localStorage.getItem("token")
+        )
+      );
       dispatch({
-        type: 'GET_ALL_ITEMS',
-        payload: cartItems.data,
+        type: "GET_ITEMS",
+        payload: cartItems.data.filter(
+          (cartItem) => cartItem.ownerId === localStorage.getItem("token")
+        ),
       });
     } catch (err) {
       console.log(err);
@@ -31,37 +37,51 @@ export function CartProvider(props) {
   }
 
   async function deleteItemById(id) {
-    await axios.delete(`/api/cart/${id}`);
-    dispatch({
-      type: 'DELETE_ITEM_BY_id',
-      payload: id,
-    });
+    try {
+      await axios.delete(`/api/cart/${id}`);
+      dispatch({
+        type: "DELETE_ITEM_BY_ID",
+        payload: id,
+      });
+    } catch (err) {
+      console.log(err);
+    }
   }
 
   async function updateQuantityOfItemById(id, quantity) {
-    await axios.put(`/api/cart/${id}`, { quantity });
-    dispatch({
-      type: 'UPDATE_QUANTITY_OF_ITEM_BY_ID',
-      payload: { id, quantity },
-    });
+    try {
+      await axios.put(`/api/cart/${id}`, { quantity });
+      dispatch({
+        type: "UPDATE_QUANTITY_OF_ITEM_BY_ID",
+        payload: { id, quantity },
+      });
+    } catch (err) {
+      console.log(err);
+    }
   }
 
   async function addItem(product) {
-    await axios.post(`/api/cart/`, {
-      id: product._id,
-      title: product.title,
-      price: product.price,
-      srcToImg: product.srcToImg,
-    });
-    dispatch({
-      type: 'ADD_ITEM',
-      payload: {
-        id: product._id,
+    try {
+      await axios.post(`/api/cart/`, {
+        productId: product._id,
         title: product.title,
         price: product.price,
         srcToImg: product.srcToImg,
-      },
-    });
+        ownerId: localStorage.getItem("token"),
+      });
+      dispatch({
+        type: "ADD_ITEM",
+        payload: {
+          id: product._id,
+          title: product.title,
+          price: product.price,
+          srcToImg: product.srcToImg,
+          ownerId: localStorage.getItem("token"),
+        },
+      });
+    } catch (err) {
+      console.log(err);
+    }
   }
 
   return (
@@ -72,7 +92,7 @@ export function CartProvider(props) {
         updateQuantityOfItemById,
         addItem,
         isCartLoaded,
-        isPurchasePaid,
+        getCartItems,
       }}
     >
       {props.children}

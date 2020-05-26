@@ -1,41 +1,85 @@
-import React from 'react';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import './App.css';
+import React from "react";
+import { BrowserRouter as Router, Switch } from "react-router-dom";
 
-import { ProductsProvider } from './context/Products/ProductsContext';
+import "./App.css";
 
-import { CartProvider } from './context/Cart/CartContext';
+import { ProductsProvider } from "./context/Products/ProductsContext";
 
-import Navbar from './components/Navbar/Navbar';
-import Products from './components/Products/Products';
-import Cart from './components/Cart/Cart';
-import ProductPage from './components/Products/ProductPage';
-import Login from './components/Login/Login';
-import SignUp from './components/Login/SignUp';
-import { UsersProvider } from './context/Users/UsersContext';
+import { CartProvider } from "./context/Cart/CartContext";
+
+import Navbar from "./components/Navbar/Navbar";
+import Products from "./components/Products/Products";
+import Cart from "./components/Cart/Cart";
+import ProductPage from "./components/Products/ProductPage";
+import Login from "./components/Login/Login";
+import SignUp from "./components/Login/SignUp";
+import { UsersProvider, UsersContext } from "./context/Users/UsersContext";
+import PrivateRoute from "./components/ProtectedRoutes/PrivateRoute";
+import ForwardRoute from "./components/ProtectedRoutes/ForwardRoute";
+import Stripe from "./components/Cart/Stripe";
 
 function App() {
   return (
     <CartProvider>
       <ProductsProvider>
         <UsersProvider>
-          <Router>
-            <>
-              <Navbar />
+          <UsersContext.Consumer>
+            {(value) => {
+              const { isAuthenticated } = value;
 
-              <Switch>
-                <Route exact path="/" component={Products} />
+              return (
+                <Router>
+                  <>
+                    <Navbar />
 
-                <Route exact path="/cart" component={Cart} />
+                    <Switch>
+                      <PrivateRoute
+                        exact
+                        path="/"
+                        component={Products}
+                        isAuthenticated={isAuthenticated}
+                      />
 
-                <Route exact path="/products/:id" component={ProductPage} />
+                      <PrivateRoute
+                        exact
+                        path="/cart"
+                        component={Cart}
+                        isAuthenticated={isAuthenticated}
+                      />
 
-                <Route exact path="/login" component={Login} />
+                      <PrivateRoute
+                        exact
+                        path="/products/:id"
+                        component={ProductPage}
+                        isAuthenticated={isAuthenticated}
+                      />
 
-                <Route exact path="/signup" component={SignUp} />
-              </Switch>
-            </>
-          </Router>
+                      <PrivateRoute
+                        exact
+                        path="/stripe"
+                        component={Stripe}
+                        isAuthenticated={isAuthenticated}
+                      />
+
+                      <ForwardRoute
+                        exact
+                        path="/login"
+                        component={Login}
+                        isAuthenticated={isAuthenticated}
+                      />
+
+                      <ForwardRoute
+                        exact
+                        path="/signup"
+                        component={SignUp}
+                        isAuthenticated={isAuthenticated}
+                      />
+                    </Switch>
+                  </>
+                </Router>
+              );
+            }}
+          </UsersContext.Consumer>
         </UsersProvider>
       </ProductsProvider>
     </CartProvider>

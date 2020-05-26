@@ -1,8 +1,8 @@
-import React, { useContext } from 'react';
+import React, { useContext } from "react";
 
-import { CartContext } from '../../context/Cart/CartContext';
+import { CartContext } from "../../context/Cart/CartContext";
 
-import { Link } from 'react-router-dom';
+import { Link } from "react-router-dom";
 
 function Card(props) {
   const { cartItems, addItem, deleteItemById } = useContext(CartContext);
@@ -16,7 +16,7 @@ function Card(props) {
           <img
             src={props.srcToImg}
             className="card-img-top"
-            style={{ height: '250px' }}
+            style={{ height: "250px" }}
             alt="..."
           />
           <div className="card-body d-flex justify-content-between">
@@ -24,13 +24,12 @@ function Card(props) {
             <span className="text-success font-weight-bold">
               ${props.price}
             </span>
-            <a
-              href="/"
+            <button
               className="btn btn-primary"
               style={{
-                position: 'absolute',
-                right: '0',
-                bottom: '74px',
+                position: "absolute",
+                right: "0",
+                bottom: "74px",
               }}
               onClick={(e) => {
                 e.preventDefault();
@@ -49,7 +48,7 @@ function Card(props) {
               ) : (
                 <i className="fas fa-cart-plus"></i>
               )}
-            </a>
+            </button>
           </div>
         </div>
       </Link>

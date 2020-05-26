@@ -1,12 +1,11 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext } from "react";
 
-import ListOfCartItems from './ListOfCartItems';
-import Total from './Total';
+import ListOfCartItems from "./ListOfCartItems";
+import Total from "./Total";
 
-import { CartContext } from '../../context/Cart/CartContext';
+import { CartContext } from "../../context/Cart/CartContext";
 
-import Loader from 'react-loader-spinner';
-import OrderForm from './OrderForm';
+import Loader from "react-loader-spinner";
 
 function Cart() {
   const { isCartLoaded, cartItems } = useContext(CartContext);
@@ -16,7 +15,7 @@ function Cart() {
       {!isCartLoaded ? (
         <div
           className="container justify-content-center d-flex align-items-center"
-          style={{ height: '80vh' }}
+          style={{ height: "80vh" }}
         >
           <Loader type="Oval" color="#00BFFF" height={200} width={200} />
         </div>
@@ -32,10 +31,6 @@ function Cart() {
               <section className="mx-sm-5 m-3 row">
                 <ListOfCartItems />
                 <Total />
-              </section>
-              <section>
-                <h1 className="m-sm-5 m-3">Your Data</h1>
-                <OrderForm />
               </section>
             </>
           )}

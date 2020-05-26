@@ -1,21 +1,20 @@
 export default (state, action) => {
   switch (action.type) {
-    case 'GET_ALL_ITEMS':
+    case "GET_ITEMS":
       return {
         ...state,
         cartItems: action.payload,
         isCartLoaded: true,
       };
 
-    case 'DELETE_ITEM_BY_id':
+    case "DELETE_ITEM_BY_ID":
       const id = action.payload;
-      console.log('id', id);
       return {
         ...state,
         cartItems: state.cartItems.filter((item) => item._id !== id),
       };
 
-    case 'UPDATE_QUANTITY_OF_ITEM_BY_ID':
+    case "UPDATE_QUANTITY_OF_ITEM_BY_ID":
       const { quantity } = action.payload;
 
       return {
@@ -28,7 +27,7 @@ export default (state, action) => {
         }),
       };
 
-    case 'ADD_ITEM':
+    case "ADD_ITEM":
       const { title, price, srcToImg } = action.payload;
       return {
         ...state,

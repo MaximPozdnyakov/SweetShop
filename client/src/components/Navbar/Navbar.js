@@ -1,13 +1,17 @@
-import { Link } from 'react-router-dom';
-import React, { useContext } from 'react';
+import { Link } from "react-router-dom";
+import React, { useContext } from "react";
 
-import Category from './Category';
-import Price from './Price';
-import Search from './Search';
-import { ProductsContext } from '../../context/Products/ProductsContext';
+import Category from "./Category";
+import Price from "./Price";
+import Search from "./Search";
+import { ProductsContext } from "../../context/Products/ProductsContext";
+import { UsersContext } from "../../context/Users/UsersContext";
+import Logout from "../Login/Logout";
 
 function Navbar() {
   const { clear } = useContext(ProductsContext);
+
+  const { isAuthenticated } = useContext(UsersContext);
 
   return (
     <header>
@@ -18,7 +22,7 @@ function Navbar() {
         <Link
           className="nav-link active font-weight-bold d-md-none d-block text-white"
           to="/cart"
-          style={{ fontSize: '1.2em' }}
+          style={{ fontSize: "1.2em" }}
         >
           <i className="fas fa-shopping-cart mr-1"></i>Cart
         </Link>
@@ -42,16 +46,20 @@ function Navbar() {
                 <Link
                   className="nav-link active font-weight-bold"
                   to="/cart"
-                  style={{ fontSize: '1.2em' }}
+                  style={{ fontSize: "1.2em" }}
                 >
                   <i className="fas fa-shopping-cart mr-1"></i>Cart
                 </Link>
               </li>
-              <li className="nav-item mx-2">
-                <Link className="nav-link active" to="/login">
-                  Login
-                </Link>
-              </li>
+              {isAuthenticated ? (
+                <Logout />
+              ) : (
+                <li className="nav-item mx-2">
+                  <Link className="nav-link active" to="/login">
+                    Login
+                  </Link>
+                </li>
+              )}
               <Category />
               <Price />
 

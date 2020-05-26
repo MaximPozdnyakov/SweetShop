@@ -1,7 +1,7 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React from "react";
 
-import SortPrice from './SortPrice';
-import RangePrice from './RangePrice';
+import SortPrice from "./SortPrice";
+import RangePrice from "./RangePrice";
 
 function Price() {
   return (
