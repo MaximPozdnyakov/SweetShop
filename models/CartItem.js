@@ -10,15 +10,6 @@ const CartSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  // idOfOrder: {
-  //   type: String,
-  //   required: true,
-  // },
-  isPaid: {
-    type: Boolean,
-    required: true,
-    default: false,
-  },
   title: {
     type: String,
     required: true,

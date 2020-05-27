@@ -1,18 +1,25 @@
-import React from "react";
+import React, { useContext } from "react";
 import StripeCheckout from "react-stripe-checkout";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { CartContext } from "../../context/Cart/CartContext";
+import "react-toastify/dist/ReactToastify.css";
+import { Redirect } from "react-router-dom";
 
-toast.configure();
+toast.configure({ autoClose: 8000 });
 
-function Stripe() {
+function Stripe(props) {
+  const { price } = props;
+
+  const { deleteItemsByOwner } = useContext(CartContext);
+
   function handleToken(token) {
     axios
       .post("/pay/charge", {
         token,
         product: {
-          name: "Cock",
-          price: 1000,
+          name: "Sweet Purchase",
+          price: price * 100,
         },
       })
       .then((res) => {
@@ -20,10 +27,14 @@ function Stripe() {
         if (status === "success") {
           toast("Success! Check emails for details", {
             type: "success",
+            position: toast.POSITION.BOTTOM_RIGHT,
           });
+          deleteItemsByOwner();
+          return <Redirect to="/" />;
         } else {
           toast("Something went wrong", {
             type: "error",
+            position: toast.POSITION.BOTTOM_RIGHT,
           });
         }
       });
@@ -35,12 +46,9 @@ function Stripe() {
         token={handleToken}
         billingAddress
         shippingAddress
-        amount={1000}
-        name={"Cock"}
+        amount={price * 100}
+        name={"Sweet Purchase"}
       />
-      <button className="btn btn-success btn-lg text-white btn-block font-weight-bold">
-        BUY NOW
-      </button>
     </div>
   );
 }

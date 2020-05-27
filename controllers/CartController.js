@@ -38,6 +38,16 @@ destroy = async (req, res) => {
   }
 };
 
+destroyByOwner = (req, res) => {
+  CartItem.deleteMany({
+    ownerId: req.params.id,
+  })
+    .then((result) => {
+      return res.json(result.data);
+    })
+    .catch((err) => console.log(err));
+};
+
 update = async (req, res) => {
   try {
     const infoAboutUpdate = await CartItem.updateOne(
@@ -55,5 +65,6 @@ module.exports = {
   index,
   store,
   destroy,
+  destroyByOwner,
   update,
 };

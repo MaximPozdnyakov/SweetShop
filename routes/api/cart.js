@@ -1,6 +1,11 @@
 const express = require("express");
 const router = express.Router();
-const { index, store, destroy } = require("../../controllers/CartController");
+const {
+  index,
+  store,
+  destroy,
+  destroyByOwner,
+} = require("../../controllers/CartController");
 
 // Product Model
 const CartItem = require("../../models/CartItem");
@@ -19,6 +24,11 @@ router.post("/", store);
 // @desc    Delete Item From Cart
 // @access  Public
 router.delete("/:id", destroy);
+
+// @route   DELETE api/cart
+// @desc    Delete Item From Cart
+// @access  Public
+router.delete("/owner/:id", destroyByOwner);
 
 // @route   PUT api/cart
 // @desc    Update Quantity Of Item From Cart

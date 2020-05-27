@@ -28,19 +28,26 @@ export default (state, action) => {
       };
 
     case "ADD_ITEM":
-      const { title, price, srcToImg } = action.payload;
+      const { title, price, srcToImg, ownerId, productId } = action.payload;
       return {
         ...state,
         cartItems: [
           ...state.cartItems,
           {
-            _id: action.payload.id,
+            _id: action.payload._id,
+            ownerId,
+            productId,
             title,
             price,
             srcToImg,
             quantity: 1,
           },
         ],
+      };
+    case "DELETE_ITEM_BY_OWNER":
+      return {
+        ...state,
+        cartItems: [],
       };
     default:
       return state;

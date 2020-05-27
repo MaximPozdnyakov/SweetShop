@@ -7,7 +7,7 @@ const router = express.Router();
 router.post("/charge", (req, res) => {
   const { product, token } = req.body;
 
-  const idempotency_key = uuidv4();
+  const idempotencyKey = uuidv4();
 
   stripe.customers
     .create({
@@ -35,11 +35,10 @@ router.post("/charge", (req, res) => {
             },
           },
           {
-            idempotency_key,
+            idempotencyKey,
           }
         )
         .then((charge) => {
-          console.log(charge);
           return res.json({
             errors: [],
             status: "success",

@@ -1,5 +1,6 @@
 const bcrypt = require("bcrypt");
 const passport = require("passport");
+const jwt = require("jsonwebtoken");
 
 index = async (req, res) => {
   try {
@@ -13,30 +14,37 @@ index = async (req, res) => {
 store = async (req, res) => {
   try {
     const { email, password1, password2 } = req.body;
-    if (
-      validatePassword(password1) &&
-      validateEmail(email) &&
-      password1 === password2
-    ) {
-      const newUser = new User({
-        email,
-        password: password1,
-      });
-      bcrypt.genSalt(10, (err, salt) => {
-        bcrypt.hash(newUser.password, salt, (err, hash) => {
-          if (err) throw err;
-          newUser.password = hash;
-          newUser
-            .save()
-            .then((data) => {
-              return res.status(201).json(data);
-            })
-            .catch((err) => console.log(err));
-        });
-      });
-    } else {
-      return res.status(400).json({ msg: "Bad request" });
-    }
+
+    User.findOne({ email })
+      .then((doc) => {
+        if (doc) return res.json({ msg: "Sorry, that email is already taken" });
+
+        if (
+          validatePassword(password1) &&
+          validateEmail(email) &&
+          password1 === password2
+        ) {
+          const newUser = new User({
+            email,
+            password: password1,
+          });
+          bcrypt.genSalt(10, (err, salt) => {
+            bcrypt.hash(newUser.password, salt, (err, hash) => {
+              if (err) throw err;
+              newUser.password = hash;
+              newUser
+                .save()
+                .then((data) => {
+                  return res.status(201).json(data);
+                })
+                .catch((err) => console.log(err));
+            });
+          });
+        } else {
+          return res.status(400).json({ msg: "Bad request" });
+        }
+      })
+      .catch((err) => console.log(err));
   } catch (err) {
     console.log(err);
     return res.status(400).json({ msg: "Bad request" });
@@ -60,7 +68,7 @@ login = function (req, res, next) {
   passport.authenticate("local", function (err, user, info) {
     if (err) {
       return res.json({
-        msg: "What a fack, dude?",
+        msg: "Password and email don`t match",
       });
     }
 
@@ -73,12 +81,17 @@ login = function (req, res, next) {
     req.logIn(user, function (err) {
       if (err) {
         return res.json({
-          msg: "What a fack, dude?",
+          msg: "Password and email don`t match",
         });
       }
-      return res.json({
-        user,
-        link: "/",
+
+      jwt.sign({ user }, "secretkey", { expiresIn: "3600s" }, (err, token) => {
+        if (err) throw err;
+        return res.json({
+          token,
+          link: "/",
+          userId: user._id,
+        });
       });
     });
   })(req, res, next);

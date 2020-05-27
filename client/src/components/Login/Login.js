@@ -3,7 +3,9 @@ import axios from "axios";
 
 import { Link } from "react-router-dom";
 import { UsersContext } from "../../context/Users/UsersContext";
-import FailMessages from "../Messages/FailMessages";
+
+import FailMsg from "../Messages/FailMsg";
+import SuccessMsg from "../Messages/SuccessMsg";
 
 function Login(props) {
   const { authorizeAction } = useContext(UsersContext);
@@ -18,7 +20,7 @@ function Login(props) {
     notEmpty: true,
   });
 
-  const [msgsFail, setMsgsFail] = useState([]);
+  const [msgFail, setMsgFail] = useState("");
 
   function validateEmail(email) {
     const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -43,34 +45,21 @@ function Login(props) {
     });
   }
 
-  function closeMsgs() {
-    setMsgsFail([]);
-    console.log(msgsFail);
-    setIsValid({
-      ...isValid,
-      notEmpty: true,
-    });
-  }
-
   function authorize(e) {
     e.preventDefault();
 
-    closeMsgs();
+    setMsgFail("");
 
     if (!user.password || !user.email) {
-      setIsValid({
-        ...isValid,
-        notEmpty: false,
-      });
-      setMsgsFail([...msgsFail, "Please, enter all fields"]);
+      setMsgFail("Please, enter all fields");
     } else if (isValid.email) {
       axios
         .post("/api/users/login", user)
         .then((res) => {
           if (res.data.msg) {
-            setMsgsFail([...msgsFail, res.data.msg]);
+            setMsgFail(res.data.msg);
           } else {
-            authorizeAction(res.data.user._id);
+            authorizeAction(res.data.token, res.data.userId);
             props.history.push(res.data.link);
           }
         })
@@ -79,12 +68,11 @@ function Login(props) {
   }
 
   return (
-    <form className="col-4 mx-auto my-4">
+    <form className="col-xl-4 col-lg-6 col-sm-8 mx-auto my-4">
       <legend className="font-weight-bold">Login</legend>
-
-      <FailMessages msgs={msgsFail} />
-
-      <div className="form-group my-4">
+      <SuccessMsg msg={localStorage.getItem("successMsg")} />
+      <FailMsg msg={msgFail} />
+      <div className="form-group my-4 has-success has-danger">
         <label htmlFor="exampleInputEmail1">Email address</label>
         <input
           type="email"
@@ -96,6 +84,10 @@ function Login(props) {
           value={user.email}
           onChange={(e) => handleEmailChange(e)}
         />
+        <div className="valid-feedback">Success!</div>
+        <div className="invalid-feedback">
+          Sorry, that email is invalid. Try another?
+        </div>
       </div>
       <div className="form-group my-4">
         <label htmlFor="exampleInputPassword1">Password</label>

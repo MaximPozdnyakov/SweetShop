@@ -1,9 +1,10 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 
 import { Link } from "react-router-dom";
-import { UsersContext } from "../../context/Users/UsersContext";
+import FailMsg from "../Messages/FailMsg";
+import axios from "axios";
 
-function SignUp() {
+function SignUp(props) {
   const [newUser, setNewUser] = useState({
     email: "",
     password1: "",
@@ -19,15 +20,12 @@ function SignUp() {
     notEmpty: true,
   });
 
-  const { users, addUser } = useContext(UsersContext);
+  const [msgFail, setMsgFail] = useState("");
 
   function validateEmail(email) {
     const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
-    return (
-      re.test(String(email).toLowerCase()) &&
-      !users.find((user) => user.email === email)
-    );
+    return re.test(String(email).toLowerCase());
   }
 
   function validatePassword(password) {
@@ -38,28 +36,11 @@ function SignUp() {
   }
 
   return (
-    <form className="col-4 mx-auto my-4">
+    <form className="col-xl-4 col-lg-6 col-sm-8 mx-auto my-4">
       <legend className="font-weight-bold">SignUp</legend>
-      <div
-        className={`${
-          isValid.notEmpty ? "d-none" : "d-block"
-        } alert alert-dismissible alert-primary`}
-      >
-        Please, enter all fields
-        <button
-          onClick={() =>
-            setIsValid({
-              ...isValid,
-              notEmpty: true,
-            })
-          }
-          type="button"
-          className="close"
-          data-dismiss="alert"
-        >
-          &times;
-        </button>
-      </div>
+
+      <FailMsg msg={msgFail} />
+
       <div className="form-group my-4 has-success has-danger">
         <label htmlFor="exampleInputEmail1">Email address</label>
         <input
@@ -86,7 +67,7 @@ function SignUp() {
         />
         <div className="valid-feedback">Success!</div>
         <div className="invalid-feedback">
-          Sorry, that email is taken or invalid. Try another?
+          Sorry, that email is invalid. Try another?
         </div>
       </div>
 
@@ -156,14 +137,14 @@ function SignUp() {
         <div className="valid-feedback">Success!</div>
         <div className="invalid-feedback">Passwords should match</div>
       </div>
-      <Link
-        to={`${
-          isValid.email && isValid.password1 && isValid.password2
-            ? "/login"
-            : "/signup"
-        }`}
+      <button
         className="btn btn-primary btn-lg btn-block my-4"
-        onClick={() => {
+        onClick={(e) => {
+          e.preventDefault();
+          setMsgFail("");
+          if (!email || !password1 || !password2) {
+            setMsgFail("Please, enter all fields");
+          }
           if (!(isValid.email && isValid.password1 && isValid.password2)) {
             setIsValid({
               email: isValid.email,
@@ -172,12 +153,25 @@ function SignUp() {
               notEmpty: false,
             });
           } else {
-            addUser(newUser);
+            axios
+              .post("/api/users", newUser)
+              .then((res) => {
+                if (res.data.msg) {
+                  setMsgFail(res.data.msg);
+                } else {
+                  localStorage.setItem(
+                    "successMsg",
+                    "You have successfully registered!"
+                  );
+                  props.history.push("/login");
+                }
+              })
+              .catch((err) => console.log(err));
           }
         }}
       >
         Sign Up
-      </Link>
+      </button>
       <Link to="/login" className="btn btn-link btn-lg btn-block">
         Login
       </Link>

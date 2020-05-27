@@ -1,4 +1,5 @@
 import React, { useContext } from "react";
+import { v4 as uuid } from "uuid";
 
 import { CartContext } from "../../context/Cart/CartContext";
 
@@ -14,7 +15,7 @@ export default function ListOfCardItems() {
       price={item.price}
       srcToImg={item.srcToImg}
       quantity={item.quantity}
-      key={item._id}
+      key={uuid()}
     />
   ));
 

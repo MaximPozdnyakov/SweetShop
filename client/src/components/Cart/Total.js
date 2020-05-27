@@ -29,7 +29,7 @@ function Total() {
           <h5 className="">{numOfProductsInCart} Products</h5>
         </div>
       </div>
-      <Stripe />
+      <Stripe price={total} />
     </div>
   );
 }

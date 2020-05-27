@@ -20,15 +20,10 @@ export function CartProvider(props) {
   async function getCartItems() {
     try {
       const cartItems = await axios.get("/api/cart");
-      console.log(
-        cartItems.data.filter(
-          (cartItem) => cartItem.ownerId === localStorage.getItem("token")
-        )
-      );
       dispatch({
         type: "GET_ITEMS",
         payload: cartItems.data.filter(
-          (cartItem) => cartItem.ownerId === localStorage.getItem("token")
+          (cartItem) => cartItem.ownerId === localStorage.getItem("userId")
         ),
       });
     } catch (err) {
@@ -42,6 +37,17 @@ export function CartProvider(props) {
       dispatch({
         type: "DELETE_ITEM_BY_ID",
         payload: id,
+      });
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  async function deleteItemsByOwner() {
+    try {
+      await axios.delete(`/api/cart/owner/${localStorage.getItem("userId")}`);
+      dispatch({
+        type: "DELETE_ITEM_BY_OWNER",
       });
     } catch (err) {
       console.log(err);
@@ -62,21 +68,22 @@ export function CartProvider(props) {
 
   async function addItem(product) {
     try {
-      await axios.post(`/api/cart/`, {
-        productId: product._id,
+      const item = await axios.post(`/api/cart/`, {
+        productId: product.productId,
         title: product.title,
         price: product.price,
         srcToImg: product.srcToImg,
-        ownerId: localStorage.getItem("token"),
+        ownerId: localStorage.getItem("userId"),
       });
       dispatch({
         type: "ADD_ITEM",
         payload: {
-          id: product._id,
-          title: product.title,
-          price: product.price,
-          srcToImg: product.srcToImg,
-          ownerId: localStorage.getItem("token"),
+          _id: item.data._id,
+          productId: item.data.productId,
+          title: item.data.title,
+          price: item.data.price,
+          srcToImg: item.data.srcToImg,
+          ownerId: localStorage.getItem("userId"),
         },
       });
     } catch (err) {
@@ -93,6 +100,7 @@ export function CartProvider(props) {
         addItem,
         isCartLoaded,
         getCartItems,
+        deleteItemsByOwner,
       }}
     >
       {props.children}

@@ -4,6 +4,7 @@ const dotenv = require("dotenv");
 const cors = require("cors");
 const passport = require("passport");
 const session = require("express-session");
+const jwt = require("jsonwebtoken");
 
 dotenv.config({ path: "./config/config.env" });
 
