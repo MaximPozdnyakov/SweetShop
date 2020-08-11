@@ -42,7 +42,7 @@
             "last 1 safari version"
         ]
     },
-    "proxy": "http://127.0.0.1:5000",
+    "proxy": "https://frozen-oasis-60575.herokuapp.com",
     "secure": false,
     "devDependencies": {
         "autoprefixer": "^9.8.6",

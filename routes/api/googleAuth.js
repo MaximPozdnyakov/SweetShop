@@ -46,7 +46,9 @@ router.get("/redirect", passport.authenticate("google"), (req, res) => {
                 console.log("err", err);
             }
             req.session.token = token;
-            return res.redirect("http://localhost:3000/store");
+            return res.redirect(
+                "https://frozen-oasis-60575.herokuapp.com/store"
+            );
         }
     );
 });

@@ -48,7 +48,8 @@ function Login() {
 
     const handleGoogleLogin = (e) => {
         e.preventDefault();
-        window.location = "http://localhost:5000/api/google-auth";
+        window.location =
+            "https://frozen-oasis-60575.herokuapp.com/api/google-auth";
     };
 
     return (
