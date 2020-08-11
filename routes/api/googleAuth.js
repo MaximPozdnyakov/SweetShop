@@ -46,9 +46,7 @@ router.get("/redirect", passport.authenticate("google"), (req, res) => {
                 console.log("err", err);
             }
             req.session.token = token;
-            return res.redirect(
-                "https://frozen-oasis-60575.herokuapp.com/store"
-            );
+            return res.redirect("https://sweety-shop.herokuapp.com/store");
         }
     );
 });

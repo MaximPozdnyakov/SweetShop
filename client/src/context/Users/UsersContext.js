@@ -159,7 +159,7 @@ export function UsersProvider(props) {
         } catch (err) {
             console.log("err :>> ", err);
         }
-        window.location = "http://localhost:3000";
+        window.location = "https://sweety-shop.herokuapp.com";
         dispatch({
             type: "USER_LOADED",
         });

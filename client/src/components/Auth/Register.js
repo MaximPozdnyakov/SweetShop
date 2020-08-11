@@ -77,8 +77,7 @@ function Register() {
 
     const handleGoogleRegister = (e) => {
         e.preventDefault();
-        window.location =
-            "https://frozen-oasis-60575.herokuapp.com/api/google-auth";
+        window.location = "https://sweety-shop.herokuapp.com/api/google-auth";
     };
     return (
         <section className="text-gray-700 body-font">

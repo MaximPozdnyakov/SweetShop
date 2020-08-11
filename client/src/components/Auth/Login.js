@@ -48,8 +48,7 @@ function Login() {
 
     const handleGoogleLogin = (e) => {
         e.preventDefault();
-        window.location =
-            "https://frozen-oasis-60575.herokuapp.com/api/google-auth";
+        window.location = "https://sweety-shop.herokuapp.com/api/google-auth";
     };
 
     return (
