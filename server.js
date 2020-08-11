@@ -5,7 +5,7 @@ const cors = require("cors");
 const passport = require("passport");
 const cookieSession = require("cookie-session");
 
-dotenv.config({ path: "./config/config.env" });
+dotenv.config({ path: "./config/env/config.env" });
 
 const app = express();
 
