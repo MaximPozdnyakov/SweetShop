@@ -90,7 +90,7 @@ export function CartProvider(props) {
             userId = localStorage.getItem("guest", { userId });
         }
         try {
-            await axios.put(`/api/cart/${id}`, { quantity });
+            await axios.put(`/api/cart/${id}`, { quantity, userId });
             dispatch({
                 type: "UPDATE_QUANTITY_OF_ITEM",
                 payload: { id, quantity },

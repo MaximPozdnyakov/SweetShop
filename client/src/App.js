@@ -20,6 +20,7 @@ import { CartContext } from "./context/Cart/CartContext";
 import ForwardRoute from "./components/ProtectedRoutes/ForwardRoute";
 import { MsgContext } from "./context/Msg/MsgContext";
 import Cart from "./components/Cart/Cart";
+import Page404 from "./components/Page404";
 
 function App() {
     const location = useLocation();
@@ -58,6 +59,7 @@ function App() {
                     <ForwardRoute exact path="/login" component={Login} />
                     <ForwardRoute exact path="/register" component={Register} />
                     <RedirectToHome exact path="/" />
+                    <Route component={Page404} />
                 </Switch>
             </Then>
             <Else>
