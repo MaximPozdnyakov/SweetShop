@@ -1,43 +1,51 @@
 {
-  "name": "sweetshop",
-  "version": "0.1.0",
-  "private": true,
-  "dependencies": {
-    "@stripe/react-stripe-js": "^1.1.2",
-    "@stripe/stripe-js": "^1.5.0",
-    "@testing-library/jest-dom": "^4.2.4",
-    "@testing-library/react": "^9.5.0",
-    "@testing-library/user-event": "^7.2.1",
-    "axios": "^0.19.2",
-    "moment": "^2.25.3",
-    "react": "^16.13.1",
-    "react-dom": "^16.13.1",
-    "react-loader-spinner": "^3.1.14",
-    "react-router-dom": "^5.1.2",
-    "react-scripts": "3.4.1",
-    "react-stripe-checkout": "^2.6.3",
-    "react-toastify": "^6.0.5",
-    "uuid": "^8.1.0"
-  },
-  "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
-  },
-  "proxy": "http://127.0.0.1:5000",
-  "secure": false,
-  "devDependencies": {}
+    "name": "sweetshop",
+    "version": "0.1.0",
+    "private": true,
+    "dependencies": {
+        "@stripe/react-stripe-js": "^1.1.2",
+        "@stripe/stripe-js": "^1.5.0",
+        "@testing-library/jest-dom": "^4.2.4",
+        "@testing-library/react": "^9.5.0",
+        "@testing-library/user-event": "^7.2.1",
+        "axios": "^0.19.2",
+        "moment": "^2.25.3",
+        "react": "^16.13.1",
+        "react-burger-menu": "^2.7.1",
+        "react-dom": "^16.13.1",
+        "react-if": "^3.4.3",
+        "react-loader-spinner": "^3.1.14",
+        "react-router-dom": "^5.1.2",
+        "react-scripts": "3.4.1",
+        "react-stripe-checkout": "^2.6.3",
+        "react-toastify": "^6.0.5",
+        "tailwindcss": "^1.6.2",
+        "uuid": "^8.1.0"
+    },
+    "scripts": {
+        "start": "react-scripts start",
+        "build": "react-scripts build",
+        "test": "react-scripts test",
+        "eject": "react-scripts eject",
+        "build:css": "postcss src/assets/tailwind.css -o src/assets/main.css",
+        "watch:css": "postcss src/assets/tailwind.css -o src/assets/main.css"
+    },
+    "browserslist": {
+        "production": [
+            ">0.2%",
+            "not dead",
+            "not op_mini all"
+        ],
+        "development": [
+            "last 1 chrome version",
+            "last 1 firefox version",
+            "last 1 safari version"
+        ]
+    },
+    "proxy": "http://127.0.0.1:5000",
+    "secure": false,
+    "devDependencies": {
+        "autoprefixer": "^9.8.6",
+        "postcss-cli": "^7.1.1"
+    }
 }

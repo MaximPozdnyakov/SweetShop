@@ -1,0 +1,87 @@
+@tailwind base;
+
+@tailwind components;
+
+@tailwind utilities;
+
+/* React burger menu */
+
+.bm-burger-button {
+    position: fixed;
+    width: 30px;
+    height: 25px;
+    right: 24px;
+    top: 15px;
+}
+
+/* Color/shape of burger icon bars */
+.bm-burger-bars {
+    background: #fff;
+}
+
+/* Color/shape of burger icon bars on hover*/
+.bm-burger-bars-hover {
+    background: #fff;
+}
+
+/* Position and sizing of clickable cross button */
+.bm-cross-button {
+    height: 36px !important;
+    width: 36px !important;
+}
+
+/* Color/shape of close button cross */
+.bm-cross {
+    background: #bdc3c7;
+}
+
+/*
+  Sidebar wrapper styles
+  Note: Beware of modifying this element as it can break the animations - you should not need to touch it in most cases
+  */
+.bm-menu-wrap {
+    position: fixed;
+    height: 100%;
+    top: 54px;
+}
+
+/* General sidebar styles */
+.bm-menu {
+    background: #ed64a6;
+    padding: 2.5em 1.5em 0;
+    font-size: 2em;
+}
+
+/* Wrapper for item list */
+.bm-item-list {
+    color: #fff;
+    padding: 0.8em;
+}
+
+/* Individual item */
+.bm-item {
+    display: inline-block;
+}
+
+.bm-item:hover {
+    color: #fff;
+    text-decoration: underline;
+}
+/* Styling of overlay */
+.bm-overlay {
+    z-index: 1000;
+    position: absolute !important;
+    top: 0 !important;
+    bottom: 0 !important;
+    right: 0 !important;
+    left: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    background: rgba(0, 0, 0, 0.3);
+}
+
+@media (min-width: 768px) {
+    .bm-burger-button {
+        display: none;
+    }
+}

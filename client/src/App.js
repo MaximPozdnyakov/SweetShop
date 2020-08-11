@@ -1,89 +1,77 @@
-import React from "react";
-import { BrowserRouter as Router, Switch } from "react-router-dom";
+import React, { useEffect, useContext } from "react";
 
-import "./App.css";
+import Loader from "react-loader-spinner";
 
-import { ProductsProvider } from "./context/Products/ProductsContext";
+import { Switch, Route, useLocation } from "react-router-dom";
 
-import { CartProvider } from "./context/Cart/CartContext";
+import { If, Then, Else } from "react-if";
 
 import Navbar from "./components/Navbar/Navbar";
+import Home from "./components/Home";
+import RedirectToHome from "./components/ProtectedRoutes/RedirectToHome";
 import Products from "./components/Products/Products";
-import Cart from "./components/Cart/Cart";
 import ProductPage from "./components/Products/ProductPage";
-import Login from "./components/Login/Login";
-import SignUp from "./components/Login/SignUp";
-import { UsersProvider, UsersContext } from "./context/Users/UsersContext";
-import PrivateRoute from "./components/ProtectedRoutes/PrivateRoute";
+import Login from "./components/Auth/Login";
+import Register from "./components/Auth/Register";
+
+import { UsersContext } from "./context/Users/UsersContext";
+import { ProductsContext } from "./context/Products/ProductsContext";
+import { CartContext } from "./context/Cart/CartContext";
 import ForwardRoute from "./components/ProtectedRoutes/ForwardRoute";
-import Stripe from "./components/Cart/Stripe";
+import { MsgContext } from "./context/Msg/MsgContext";
+import Cart from "./components/Cart/Cart";
 
 function App() {
-  return (
-    <CartProvider>
-      <ProductsProvider>
-        <UsersProvider>
-          <UsersContext.Consumer>
-            {(value) => {
-              const { isAuthenticated } = value;
+    const location = useLocation();
 
-              return (
-                <Router>
-                  <>
-                    <Navbar />
+    const { getUser, isUserLoaded } = useContext(UsersContext);
+    const { getProducts, isProductsLoaded } = useContext(ProductsContext);
+    const { getCartItems, isCartLoaded } = useContext(CartContext);
+    const { setMsg } = useContext(MsgContext);
 
-                    <Switch>
-                      <PrivateRoute
-                        exact
-                        path="/"
-                        component={Products}
-                        isAuthenticated={isAuthenticated}
-                      />
+    useEffect(() => {
+        getProducts();
+        getUser();
+    }, []);
 
-                      <PrivateRoute
-                        exact
-                        path="/cart"
-                        component={Cart}
-                        isAuthenticated={isAuthenticated}
-                      />
+    useEffect(() => {
+        if (isUserLoaded) {
+            getCartItems();
+        }
+    }, [isUserLoaded]);
 
-                      <PrivateRoute
-                        exact
-                        path="/products/:id"
-                        component={ProductPage}
-                        isAuthenticated={isAuthenticated}
-                      />
+    useEffect(() => {
+        setMsg("");
+        window.scrollTo(0, 0);
+    }, [location.pathname]);
 
-                      <PrivateRoute
-                        exact
-                        path="/stripe"
-                        component={Stripe}
-                        isAuthenticated={isAuthenticated}
-                      />
+    return (
+        <If condition={isUserLoaded && isProductsLoaded && isCartLoaded}>
+            <Then>
+                <Navbar />
 
-                      <ForwardRoute
-                        exact
-                        path="/login"
-                        component={Login}
-                        isAuthenticated={isAuthenticated}
-                      />
-
-                      <ForwardRoute
-                        exact
-                        path="/signup"
-                        component={SignUp}
-                        isAuthenticated={isAuthenticated}
-                      />
-                    </Switch>
-                  </>
-                </Router>
-              );
-            }}
-          </UsersContext.Consumer>
-        </UsersProvider>
-      </ProductsProvider>
-    </CartProvider>
-  );
+                <Switch>
+                    <Route exact path="/home" component={Home} />
+                    <Route exact path="/store" component={Products} />
+                    <Route exact path="/store/:id" component={ProductPage} />
+                    <Route exact path="/cart" component={Cart} />
+                    <ForwardRoute exact path="/login" component={Login} />
+                    <ForwardRoute exact path="/register" component={Register} />
+                    <RedirectToHome exact path="/" />
+                </Switch>
+            </Then>
+            <Else>
+                <div className="absolute top-0 w-screen h-screen flex flex-wrap items-center justify-center">
+                    <Loader
+                        type="Oval"
+                        color="#ed64a6"
+                        height={80}
+                        width={80}
+                    />
+                </div>
+            </Else>
+        </If>
+    );
 }
 
 export default App;

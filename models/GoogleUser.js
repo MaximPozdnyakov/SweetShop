@@ -1,15 +1,11 @@
 const mongoose = require("mongoose");
 
 // Create Schema
-const UserSchema = new mongoose.Schema({
-    email: {
+const GoogleUserSchema = new mongoose.Schema({
+    googleId: {
         type: String,
         required: true,
         unique: true,
-    },
-    password: {
-        type: String,
-        required: true,
     },
     created_at: {
         type: Date,
@@ -17,4 +13,4 @@ const UserSchema = new mongoose.Schema({
     },
 });
 
-module.exports = User = mongoose.model("Users", UserSchema);
+module.exports = GoogleUser = mongoose.model("GoogleUsers", GoogleUserSchema);

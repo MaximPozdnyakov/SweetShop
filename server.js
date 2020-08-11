@@ -3,8 +3,7 @@ const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 const cors = require("cors");
 const passport = require("passport");
-const session = require("express-session");
-const jwt = require("jsonwebtoken");
+const cookieSession = require("cookie-session");
 
 dotenv.config({ path: "./config/config.env" });
 
@@ -12,15 +11,20 @@ const app = express();
 
 // Passport Config
 require("./config/passport")(passport);
+require("./config/passportGoogle")(passport);
 
 // Express session
 app.use(
-  session({
-    secret: "secret",
-    resave: true,
-    saveUninitialized: true,
-  })
+    cookieSession({
+        name: "session",
+        secret: "secret",
+    })
 );
+
+app.use(function (req, res, next) {
+    req.sessionOptions.maxAge = 30 * 24 * 60 * 60 * 1000;
+    next();
+});
 
 // Passport middleware
 app.use(passport.initialize());
@@ -36,22 +40,24 @@ app.use(cors());
 const products = require("./routes/api/products");
 const cart = require("./routes/api/cart");
 const users = require("./routes/api/users");
+const googleAuth = require("./routes/api/googleAuth");
 const pay = require("./routes/pay");
 
 //Connect to mongo
 mongoose
-  .connect(process.env.mongoURI, {
-    useNewUrlParser: true,
-    useCreateIndex: true,
-    useUnifiedTopology: true,
-  })
-  .then(() => console.log("MongoDB connected"))
-  .catch((err) => console.log(err));
+    .connect(process.env.mongoURI, {
+        useNewUrlParser: true,
+        useCreateIndex: true,
+        useUnifiedTopology: true,
+    })
+    .then(() => console.log("MongoDB connected"))
+    .catch((err) => console.log(err));
 
 // Use routes
 app.use("/api/products", products);
 app.use("/api/cart", cart);
 app.use("/api/users", users);
+app.use("/api/google-auth", googleAuth);
 app.use("/pay", pay);
 
 const port = process.env.PORT || 8000;

@@ -4,68 +4,69 @@ import { CartContext } from "../../context/Cart/CartContext";
 
 import { Link } from "react-router-dom";
 
+import { If, Then, Else } from "react-if";
+
 function Card(props) {
-  const { cartItems, addItem, deleteItemById } = useContext(CartContext);
+    const { id, title, category, srcToImg, price } = props;
 
-  const [cartItem, setCartItem] = useState(
-    cartItems.find((item) => item.productId === props._id)
-  );
+    const { cartItems, addItem, deleteItemById } = useContext(CartContext);
 
-  useEffect(() => {
-    setCartItem(cartItems.find((item) => item.productId === props._id));
-  }, [cartItems]);
+    const [cartItem, setCartItem] = useState(
+        cartItems.find((item) => item.productId === id)
+    );
 
-  return (
-    <div className="col-xl-3 col-md-4 col-sm-6 col-12 mb-4">
-      <Link to={`/products/${props._id}`} className="text-decoration-none">
-        <div className="card" className="mx-auto" style={{ width: "250px" }}>
-          <img
-            src={props.srcToImg}
-            className="card-img-top"
-            style={{ height: "250px", width: "250px" }}
-            alt="..."
-          />
-          <button
-            className="btn btn-primary"
-            style={{
-              position: "relative",
-              left: "198px",
-              bottom: "38px",
-            }}
-            onClick={(e) => {
-              e.preventDefault();
-              cartItem
-                ? deleteItemById(cartItem._id)
-                : addItem({
-                    productId: props._id,
-                    title: props.title,
-                    price: props.price,
-                    srcToImg: props.srcToImg,
-                  });
-            }}
-          >
-            {cartItem ? (
-              <i className="fas fa-check"></i>
-            ) : (
-              <i className="fas fa-cart-plus"></i>
-            )}
-          </button>
-          <div
-            className="card-body d-flex justify-content-between"
-            style={{
-              position: "relative",
-              bottom: "30px",
-            }}
-          >
-            <h5 className="card-title">{props.title}</h5>
-            <span className="text-success font-weight-bold">
-              ${props.price}
-            </span>
-          </div>
+    useEffect(() => {
+        setCartItem(cartItems.find((item) => item.productId === id));
+    }, [cartItems]);
+
+    const addRemoveProduct = (e) => {
+        e.preventDefault();
+        if (!cartItem) {
+            setCartItem({ id });
+            addItem({
+                productId: id,
+            });
+        } else {
+            setCartItem(undefined);
+            deleteItemById(cartItem._id);
+        }
+    };
+
+    return (
+        <div className="lg:w-1/4 md:w-1/2 p-4 w-full">
+            <Link to={`/store/${id}`}>
+                <div className="block relative h-48 rounded overflow-hidden">
+                    <img
+                        alt="ecommerce"
+                        className="object-cover object-center w-full h-full block"
+                        src={srcToImg}
+                    />
+                </div>
+                <div className="mt-4 relative">
+                    <h3 className="text-gray-500 text-xs tracking-widest title-font mb-1">
+                        {category.toUpperCase()}
+                    </h3>
+                    <h2 className="text-gray-900 title-font text-lg font-medium">
+                        {title}
+                    </h2>
+                    <p className="mt-1">${price}</p>
+                    <button
+                        className="bg-pink-500 hover:bg-pink-600 px-3 py-1 absolute bottom-0 right-0 text-white rounded"
+                        onClick={addRemoveProduct}
+                    >
+                        <If condition={!!cartItem}>
+                            <Then>
+                                <i className="fas fa-check"></i>
+                            </Then>
+                            <Else>
+                                <i className="fas fa-cart-plus"></i>
+                            </Else>
+                        </If>
+                    </button>
+                </div>
+            </Link>
         </div>
-      </Link>
-    </div>
-  );
+    );
 }
 
 export default Card;

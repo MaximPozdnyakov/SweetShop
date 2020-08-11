@@ -1,109 +1,156 @@
-import React, { createContext, useEffect, useReducer } from "react";
+import React, { createContext, useReducer, useContext } from "react";
 import axios from "axios";
 import CartReducer from "./CartReducer";
+import { UsersContext } from "../Users/UsersContext";
 
 export const CartContext = createContext();
 
 export function CartProvider(props) {
-  const [cartState, dispatch] = useReducer(CartReducer, {
-    isCartLoaded: false,
-    cartItems: [],
-  });
+    const { user } = useContext(UsersContext);
 
-  const { isCartLoaded, cartItems } = cartState;
+    const [cartState, dispatch] = useReducer(CartReducer, {
+        isCartLoaded: false,
+        isQuantityLoaded: true,
+        cartItems: [],
+    });
 
-  useEffect(() => {
-    getCartItems();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    const { isCartLoaded, cartItems, isQuantityLoaded } = cartState;
 
-  async function getCartItems() {
-    try {
-      const cartItems = await axios.get("/api/cart");
-      dispatch({
-        type: "GET_ITEMS",
-        payload: cartItems.data.filter(
-          (cartItem) => cartItem.ownerId === localStorage.getItem("userId")
-        ),
-      });
-    } catch (err) {
-      console.log(err);
+    async function getCartItems() {
+        let userId;
+        if (Object.keys(user).length !== 0) {
+            userId = user._id;
+        } else {
+            userId = localStorage.getItem("guest");
+        }
+        try {
+            const cartItems = await axios.post("/api/cart", { userId });
+            dispatch({
+                type: "GET_ITEMS",
+                payload: cartItems.data,
+            });
+        } catch (err) {
+            console.log(err);
+        }
+        dispatch({
+            type: "CART_LOADED",
+        });
     }
-  }
 
-  async function deleteItemById(id) {
-    try {
-      await axios.delete(`/api/cart/${id}`);
-      dispatch({
-        type: "DELETE_ITEM_BY_ID",
-        payload: id,
-      });
-    } catch (err) {
-      console.log(err);
+    async function deleteItemById(id) {
+        let userId;
+        if (Object.keys(user).length !== 0) {
+            userId = user._id;
+        } else {
+            userId = localStorage.getItem("guest");
+        }
+        try {
+            console.log("userId", userId);
+            await axios.delete(`/api/cart/${id}`, { data: { userId } });
+            dispatch({
+                type: "DELETE_ITEM_BY_ID",
+                payload: id,
+            });
+        } catch (err) {
+            console.log(err);
+        }
+        dispatch({
+            type: "CART_LOADED",
+        });
     }
-  }
 
-  async function deleteItemsByOwner() {
-    try {
-      await axios.delete(`/api/cart/owner/${localStorage.getItem("userId")}`);
-      dispatch({
-        type: "DELETE_ITEM_BY_OWNER",
-      });
-    } catch (err) {
-      console.log(err);
+    async function deleteItemsByOwner() {
+        let userId;
+        if (Object.keys(user).length !== 0) {
+            userId = user._id;
+        } else {
+            userId = localStorage.getItem("guest");
+        }
+        dispatch({
+            type: "CART_NOT_LOADED",
+        });
+        try {
+            await axios.delete(`/api/cart/owner`, { data: { userId } });
+            dispatch({
+                type: "DELETE_ITEM_BY_OWNER",
+            });
+        } catch (err) {
+            console.log(err);
+        }
+        dispatch({
+            type: "CART_LOADED",
+        });
     }
-  }
 
-  async function updateQuantityOfItemById(id, quantity) {
-    try {
-      await axios.put(`/api/cart/${id}`, { quantity });
-      dispatch({
-        type: "UPDATE_QUANTITY_OF_ITEM_BY_ID",
-        payload: { id, quantity },
-      });
-    } catch (err) {
-      console.log(err);
+    async function updateQuantityOfItem(id, quantity) {
+        let userId;
+        if (Object.keys(user).length !== 0) {
+            userId = user._id;
+        } else {
+            userId = localStorage.getItem("guest", { userId });
+        }
+        try {
+            await axios.put(`/api/cart/${id}`, { quantity });
+            dispatch({
+                type: "UPDATE_QUANTITY_OF_ITEM",
+                payload: { id, quantity },
+            });
+        } catch (err) {
+            console.log(err);
+        }
     }
-  }
 
-  async function addItem(product) {
-    try {
-      const item = await axios.post(`/api/cart/`, {
-        productId: product.productId,
-        title: product.title,
-        price: product.price,
-        srcToImg: product.srcToImg,
-        ownerId: localStorage.getItem("userId"),
-      });
-      dispatch({
-        type: "ADD_ITEM",
-        payload: {
-          _id: item.data._id,
-          productId: item.data.productId,
-          title: item.data.title,
-          price: item.data.price,
-          srcToImg: item.data.srcToImg,
-          ownerId: localStorage.getItem("userId"),
-        },
-      });
-    } catch (err) {
-      console.log(err);
+    async function addItem({ productId }) {
+        let userId;
+        if (Object.keys(user).length !== 0) {
+            userId = user._id;
+        } else {
+            userId = localStorage.getItem("guest");
+        }
+        try {
+            const item = await axios.post(`/api/cart/store`, {
+                productId,
+                quantity: 1,
+                userId,
+            });
+            dispatch({
+                type: "ADD_ITEM",
+                payload: {
+                    _id: item.data._id,
+                    productId: item.data.productId,
+                    ownerId: item.data.ownerId,
+                    quantity: item.data.quantity,
+                },
+            });
+        } catch (err) {
+            console.log(err);
+        }
+        dispatch({
+            type: "CART_LOADED",
+        });
     }
-  }
 
-  return (
-    <CartContext.Provider
-      value={{
-        cartItems,
-        deleteItemById,
-        updateQuantityOfItemById,
-        addItem,
-        isCartLoaded,
-        getCartItems,
-        deleteItemsByOwner,
-      }}
-    >
-      {props.children}
-    </CartContext.Provider>
-  );
+    const cartNotLoaded = () => {
+        dispatch({
+            type: "CART_NOT_LOADED",
+        });
+    };
+
+    return (
+        <CartContext.Provider
+            value={{
+                cartItems,
+                deleteItemById,
+                updateQuantityOfItem,
+                addItem,
+                isCartLoaded,
+                getCartItems,
+                deleteItemsByOwner,
+                isQuantityLoaded,
+                cartNotLoaded,
+            }}
+        >
+            {props.children}
+        </CartContext.Provider>
+    );
 }

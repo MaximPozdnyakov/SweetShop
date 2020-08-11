@@ -1,10 +1,8 @@
 export default (state, action) => {
     switch (action.type) {
-        case "GET_ALL_PRODUCTS":
+        case "SET_MSG":
             return {
-                ...state,
-                products: action.payload,
-                isProductsLoaded: true,
+                msg: action.payload,
             };
         default:
             return state;
