@@ -12,8 +12,8 @@ function ProductPage(props) {
 
     const [product, setProduct] = useState(products.find((p) => p._id === id));
     useEffect(() => {
-        setProduct(products.find((p) => p._id === props.match.params.id));
-    }, [id]);
+        setProduct(products.find((p) => p._id === id));
+    }, [products, id]);
     const { title, price, srcToImg } = product;
 
     const [cartItem, setCartItem] = useState(
@@ -22,7 +22,7 @@ function ProductPage(props) {
 
     useEffect(() => {
         setCartItem(cartItems.find((item) => item.productId === id));
-    }, [cartItems]);
+    }, [cartItems, id]);
 
     const addRemoveProduct = (e) => {
         e.preventDefault();

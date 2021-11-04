@@ -17,7 +17,7 @@ function Card(props) {
 
     useEffect(() => {
         setCartItem(cartItems.find((item) => item.productId === id));
-    }, [cartItems]);
+    }, [cartItems, id]);
 
     const addRemoveProduct = (e) => {
         e.preventDefault();
