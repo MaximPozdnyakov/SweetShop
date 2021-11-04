@@ -129,7 +129,7 @@ export function UsersProvider(props) {
                         },
                     }
                 );
-                if (res.data.msg == "You are logout") {
+                if (res.data.msg === "You are logout") {
                     dispatch({
                         type: "LOGOUT",
                     });
@@ -151,7 +151,7 @@ export function UsersProvider(props) {
         });
         try {
             const res = await axios.get("/api/google-auth/logout");
-            if (res.data.msg == "You are logout") {
+            if (res.data.msg === "You are logout") {
                 dispatch({
                     type: "LOGOUT",
                 });
