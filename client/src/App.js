@@ -33,18 +33,18 @@ function App() {
     useEffect(() => {
         getProducts();
         getUser();
-    }, []);
+    }, []); // eslint-disable-line
 
     useEffect(() => {
         if (isUserLoaded) {
             getCartItems();
         }
-    }, [isUserLoaded]);
+    }, [isUserLoaded]);  // eslint-disable-line
 
     useEffect(() => {
         setMsg("");
         window.scrollTo(0, 0);
-    }, [location.pathname]);
+    }, [location.pathname]);  // eslint-disable-line
 
     return (
         <If condition={isUserLoaded && isProductsLoaded && isCartLoaded}>
