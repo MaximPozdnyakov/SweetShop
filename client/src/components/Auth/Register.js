@@ -18,7 +18,7 @@ function Register() {
     };
     const validateEmail = (email) =>
         email === "" ||
-        /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(
+        /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test( //eslint-disable-line
             email.toLowerCase()
         );
 
@@ -30,7 +30,7 @@ function Register() {
     };
 
     function validatePassword(password) {
-        const regex = /^[A-Za-z]\w{7,14}$/;
+        const regex = /^[A-Za-z]\w{7,14}$/; //eslint-disable-line
         return password === "" || regex.test(password);
         // password between 7 to 16 characters which contain only characters,
         // numeric digits, underscore and first character must be a letter
