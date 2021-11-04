@@ -25,7 +25,7 @@ export default (state, action) => {
             };
 
         case "ADD_ITEM":
-            const { ownerId, title, productId, quantity } = action.payload;
+            const { ownerId, productId, quantity } = action.payload;
             return {
                 ...state,
                 cartItems: [
