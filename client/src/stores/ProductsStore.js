@@ -13,13 +13,17 @@ class ProductsStore {
     @observable products = [];
     @observable isProductsLoaded = false;
 
-    @action fetchProducts = async () => {
+    async fetchProducts() {
         try {
             const products = await axios.get("/api/products");
-            this.isProductsLoaded = true;
-            this.products = products.data;
+            this.setProducts(products.data);
         } catch (e) {}
-    };
+    }
+
+    @action setProducts(products) {
+        this.isProductsLoaded = true;
+        this.products = products;
+    }
 }
 
 export default ProductsStore;
