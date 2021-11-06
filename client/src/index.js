@@ -1,12 +1,21 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import Providers from "./Providers";
+import { BrowserRouter as Router } from "react-router-dom";
+import { Provider as MobxProvider } from "mobx-react";
+
+import App from "./App";
+
+import GlobalStore from "./stores/GlobalStore";
 
 import "./assets/main.css";
 
 ReactDOM.render(
     <React.StrictMode>
-        <Providers />
+        <MobxProvider {...new GlobalStore()}>
+            <Router>
+                <App />
+            </Router>
+        </MobxProvider>
     </React.StrictMode>,
     document.getElementById("root")
 );
