@@ -1,6 +1,10 @@
-import { action, observable } from "mobx";
+import { action, observable, makeObservable } from "mobx";
 
 class MsgStore {
+    constructor() {
+        makeObservable(this);
+    }
+
     @observable msg = "";
 
     @action setMsg = (msg) => {

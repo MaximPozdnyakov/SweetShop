@@ -1,8 +1,9 @@
-import { action, observable, when } from "mobx";
+import { action, observable, when, makeObservable } from "mobx";
 import axios from "axios";
 
 class ProductsStore {
     constructor() {
+        makeObservable(this);
         when(
             () => !this.isProductsLoaded,
             () => this.fetchProducts()
@@ -16,7 +17,7 @@ class ProductsStore {
         try {
             const products = await axios.get("/api/products");
             this.isProductsLoaded = true;
-            this.products = products;
+            this.products = products.data;
         } catch (e) {}
     };
 }
