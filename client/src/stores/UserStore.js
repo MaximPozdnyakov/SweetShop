@@ -1,4 +1,4 @@
-import { action, observable, when, makeObservable } from "mobx";
+import { action, observable, when, makeObservable, computed } from "mobx";
 import axios from "axios";
 import { v4 as uuidv4 } from "uuid";
 
@@ -40,6 +40,7 @@ class UserStore {
             if (!localStorage.getItem("guest")) {
                 localStorage.setItem("guest", uuidv4());
             }
+            this.setUserLoaded();
         } catch (e) {}
     }
 
@@ -119,6 +120,13 @@ class UserStore {
     @action setUserLogout() {
         this.isAuthenticated = false;
         this.user = {};
+    }
+
+    @computed get userId() {
+        if (Object.keys(this.user).length) {
+            return this.user._id;
+        }
+        return localStorage.getItem("guest");
     }
 }
 
