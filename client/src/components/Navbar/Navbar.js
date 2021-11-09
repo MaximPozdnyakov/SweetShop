@@ -23,7 +23,7 @@ class Navbar extends React.Component {
             <header className="bg-pink-500 text-white body-font fixed inset-x-0 top-0 z-50">
                 <div className="flex flex-wrap pt-3 px-5 flex-col md:flex-row items-start md:items-center">
                     <Link
-                        to="/home"
+                        to="/store"
                         className="title-font text-xl font-medium pb-3"
                     >
                         Sweet Shop
