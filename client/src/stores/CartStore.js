@@ -17,69 +17,89 @@ class CartStore {
     fetchCart = async () => {
         try {
             this.setCartNotLoaded();
+            const { userId } = this.UserStore;
             const cartItems = await axios.post("/api/cart", {
-                userId: this.UserStore.userId,
+                userId,
             });
             this.setCartItems(cartItems.data);
         } catch (e) {}
     };
 
     addCartItem = async ({ productId }) => {
+        const { userId } = this.UserStore;
+        runInAction(() => {
+            this.cartItems = [
+                ...this.cartItems,
+                {
+                    productId,
+                    ownerId: userId,
+                    quantity: 1,
+                },
+            ];
+        });
         try {
-            const item = await axios.post(`/api/cart/store`, {
+            const newCartItem = await axios.post(`/api/cart/store`, {
                 productId,
                 quantity: 1,
-                userId: this.UserStore.userId,
+                userId,
             });
             runInAction(() => {
-                this.cartItems = [
-                    ...this.cartItems,
-                    {
-                        _id: item.data._id,
-                        productId: item.data.productId,
-                        ownerId: item.data.ownerId,
-                        quantity: item.data.quantity,
-                    },
-                ];
+                this.cartItems = this.cartItems.map((item) => {
+                    if (item.productId === productId) {
+                        item._id = newCartItem.data._id;
+                    }
+                    return item;
+                });
             });
         } catch (e) {}
     };
 
-    updateQuantityOfItem = async (id, quantity) => {
+    updateQuantityOfItem = async ({ productId, quantity }) => {
         runInAction(() => {
             this.cartItems = this.cartItems.map((item) => {
-                if (item._id === id) {
+                if (item.productId === productId) {
                     item.quantity = quantity;
                 }
                 return item;
             });
         });
         try {
+            const { userId } = this.UserStore;
+            const id = this.cartItems.find(
+                (item) => item.productId === productId
+            )._id;
             await axios.put(`/api/cart/${id}`, {
                 quantity,
-                userId: this.UserStore.userId,
+                userId,
             });
         } catch (err) {}
     };
 
-    deleteItemById = async (id) => {
+    deleteCartItem = async ({ productId }) => {
+        const id = this.cartItems.find(
+            (item) => item.productId === productId
+        )._id;
         runInAction(() => {
-            this.cartItems = this.cartItems.filter((item) => item._id !== id);
+            this.cartItems = this.cartItems.filter(
+                (item) => item.productId !== productId
+            );
         });
         try {
+            const { userId } = this.UserStore;
             await axios.delete(`/api/cart/${id}`, {
-                data: { userId: this.UserStore.userId },
+                data: { userId },
             });
         } catch (e) {}
     };
 
-    deleteItemsByOwner = async () => {
+    deleteAllCartItems = async () => {
         runInAction(() => {
             this.cartItems = [];
         });
         try {
+            const { userId } = this.UserStore;
             await axios.delete(`/api/cart/owner`, {
-                data: { userId: this.UserStore.userId },
+                data: { userId },
             });
         } catch (e) {}
     };
