@@ -9,22 +9,21 @@ import { If, Else, Then } from "react-if";
 @inject("UserStore")
 @observer
 class MobileMenu extends React.Component {
-    constructor() {
-        super();
-        this.state = {
-            isMenuOpen: false,
-        };
-    }
+    state = {
+        isMenuOpen: false,
+    };
 
     toggleMenu = () =>
         this.setState(({ isMenuOpen }) => ({ isMenuOpen: !isMenuOpen }));
 
     render() {
+        const { isAuthenticated } = this.props.UserStore;
+        const { isMenuOpen } = this.state;
         return (
             <Menu
                 right
                 className="block md:hidden"
-                isOpen={this.state.isMenuOpen}
+                isOpen={isMenuOpen}
                 onOpen={this.toggleMenu}
                 onClose={this.toggleMenu}
             >
@@ -34,7 +33,7 @@ class MobileMenu extends React.Component {
                 <Link to="/store" className="mb-3" onClick={this.toggleMenu}>
                     Store
                 </Link>
-                <If condition={this.props.UserStore.isAuthenticated}>
+                <If condition={isAuthenticated}>
                     <Then>
                         <Link
                             onClick={() => {
