@@ -104,8 +104,28 @@ class CartStore {
         } catch (e) {}
     };
 
+    makePurchase = async ({ token, total }) => {
+        try {
+            this.setCartNotLoaded();
+            const purchaseRes = await axios.post("/pay/charge", {
+                token,
+                product: {
+                    name: "Sweet Purchase",
+                    price: total * 100,
+                },
+                userToken: localStorage.getItem("token"),
+            });
+            this.setCartLoaded();
+            return purchaseRes.data.status;
+        } catch (e) {}
+    };
+
     @action setCartItems(cartItems) {
         this.cartItems = cartItems;
+        this.isCartLoaded = true;
+    }
+
+    @action setCartLoaded() {
         this.isCartLoaded = true;
     }
 
