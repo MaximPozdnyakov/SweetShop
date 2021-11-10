@@ -1,13 +1,13 @@
 import React from "react";
 import { Route, Redirect } from "react-router-dom";
 
-const RedirectToHome = ({ ...rest }) => (
+const HomeRoute = ({ ...rest }) => (
     <Route
         {...rest}
-        render={(props) => {
+        render={() => {
             return <Redirect to="/home" />;
         }}
     />
 );
 
-export default RedirectToHome;
+export default HomeRoute;
