@@ -1,11 +1,17 @@
-import { action, observable, makeObservable, when, runInAction } from "mobx";
+import {
+    action,
+    observable,
+    makeObservable,
+    reaction,
+    runInAction,
+} from "mobx";
 import axios from "axios";
 
 class CartStore {
     constructor(props) {
         makeObservable(this);
         this.UserStore = props.UserStore;
-        when(
+        reaction(
             () => this.UserStore.isUserLoaded,
             () => this.fetchCart()
         );
@@ -15,6 +21,7 @@ class CartStore {
     @observable isCartLoaded = false;
 
     fetchCart = async () => {
+        if (!this.UserStore.isUserLoaded) return;
         try {
             this.setCartNotLoaded();
             const { userId } = this.UserStore;
