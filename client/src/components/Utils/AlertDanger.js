@@ -1,14 +1,19 @@
-import React, { useContext } from "react";
-import { MsgContext } from "../../context/Msg/MsgContext";
+import React from "react";
+import { observer, inject } from "mobx-react";
 
-function AlertDanger() {
-    const { msg, setMsg } = useContext(MsgContext);
+@inject("MsgStore")
+@observer
+class AlertDanger extends React.Component {
+    closeAlert = () => {
+        const { setMsg } = this.props.MsgStore;
+        setMsg("");
+    };
 
-    const closeAlert = () => setMsg("");
-
-    if (msg === "") {
-        return <></>;
-    } else {
+    render() {
+        const { msg } = this.props.MsgStore;
+        if (msg === "") {
+            return null;
+        }
         return (
             <div
                 className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative"
@@ -17,7 +22,7 @@ function AlertDanger() {
                 <span className="block sm:inline">{msg}</span>
                 <span
                     className="absolute top-0 bottom-0 right-0 px-4 py-3"
-                    onClick={closeAlert}
+                    onClick={this.closeAlert}
                 >
                     <svg
                         className="fill-current h-6 w-6 text-red-500"
