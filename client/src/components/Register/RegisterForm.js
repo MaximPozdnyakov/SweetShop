@@ -4,8 +4,8 @@ import { withFormik } from "formik";
 import { Link, Redirect } from "react-router-dom";
 
 import AlertDanger from "../Utils/AlertDanger";
-import EmailField from "./EmailField";
-import PasswordField from "./PasswordField";
+import EmailField from "../Utils/EmailField";
+import PasswordField from "../Utils/PasswordField";
 import ConfirmationPasswordField from "./ConfirmationPasswordField";
 import GoogleRegisterBtn from "./GoogleRegisterBtn";
 
@@ -88,7 +88,7 @@ export default withFormik({
 
     handleSubmit: async (
         { email, password, confirmationPassword },
-        { setFieldError, props }
+        { setFieldError, resetForm, props }
     ) => {
         const requiredMsg = "This field is required";
         if (!email) setFieldError("email", requiredMsg);
@@ -103,6 +103,7 @@ export default withFormik({
             password2: confirmationPassword,
         });
         if (!user.msg) return <Redirect to="/store" />;
+        resetForm({ values: { email, password, confirmationPassword } });
     },
     displayName: "FormikRegister",
 })(RegisterForm);
