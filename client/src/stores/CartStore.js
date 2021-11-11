@@ -1,15 +1,9 @@
-import {
-    action,
-    observable,
-    makeObservable,
-    reaction,
-    runInAction,
-} from "mobx";
+import { makeAutoObservable, reaction, runInAction } from "mobx";
 import axios from "axios";
 
 class CartStore {
     constructor(props) {
-        makeObservable(this);
+        makeAutoObservable(this);
         this.UserStore = props.UserStore;
         reaction(
             () => this.UserStore.isUserLoaded,
@@ -17,8 +11,8 @@ class CartStore {
         );
     }
 
-    @observable cartItems = [];
-    @observable isCartLoaded = false;
+    cartItems = [];
+    isCartLoaded = false;
 
     fetchCart = async () => {
         if (!this.UserStore.isUserLoaded) return;
@@ -127,16 +121,16 @@ class CartStore {
         } catch (e) {}
     };
 
-    @action setCartItems(cartItems) {
+    setCartItems(cartItems) {
         this.cartItems = cartItems;
         this.isCartLoaded = true;
     }
 
-    @action setCartLoaded() {
+    setCartLoaded() {
         this.isCartLoaded = true;
     }
 
-    @action setCartNotLoaded() {
+    setCartNotLoaded() {
         this.isCartLoaded = false;
     }
 }

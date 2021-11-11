@@ -1,10 +1,10 @@
-import { action, observable, when, makeObservable, computed } from "mobx";
+import { when, makeAutoObservable } from "mobx";
 import axios from "axios";
 import { v4 as uuidv4 } from "uuid";
 
 class UserStore {
     constructor(props) {
-        makeObservable(this);
+        makeAutoObservable(this);
         this.MsgStore = props.MsgStore;
         when(
             () => !this.isUserLoaded,
@@ -12,9 +12,9 @@ class UserStore {
         );
     }
 
-    @observable user = {};
-    @observable isUserLoaded = false;
-    @observable isAuthenticated = false;
+    user = {};
+    isUserLoaded = false;
+    isAuthenticated = false;
 
     async fetchUser() {
         try {
@@ -103,26 +103,26 @@ class UserStore {
         } catch (e) {}
     };
 
-    @action setUser(user) {
+    setUser(user) {
         this.user = user;
         this.isAuthenticated = true;
         this.isUserLoaded = true;
     }
 
-    @action setUserNotLoaded() {
+    setUserNotLoaded() {
         this.isUserLoaded = false;
     }
 
-    @action setUserLoaded() {
+    setUserLoaded() {
         this.isUserLoaded = true;
     }
 
-    @action setUserLogout() {
+    setUserLogout() {
         this.isAuthenticated = false;
         this.user = {};
     }
 
-    @computed get userId() {
+    get userId() {
         if (Object.keys(this.user).length) {
             return this.user._id;
         }

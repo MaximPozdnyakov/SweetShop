@@ -1,17 +1,17 @@
-import { action, observable, when, makeObservable } from "mobx";
+import { when, makeAutoObservable } from "mobx";
 import axios from "axios";
 
 class ProductsStore {
     constructor() {
-        makeObservable(this);
+        makeAutoObservable(this);
         when(
             () => !this.isProductsLoaded,
             () => this.fetchProducts()
         );
     }
 
-    @observable products = [];
-    @observable isProductsLoaded = false;
+    products = [];
+    isProductsLoaded = false;
 
     async fetchProducts() {
         try {
@@ -20,7 +20,7 @@ class ProductsStore {
         } catch (e) {}
     }
 
-    @action setProducts(products) {
+    setProducts(products) {
         this.isProductsLoaded = true;
         this.products = products;
     }
