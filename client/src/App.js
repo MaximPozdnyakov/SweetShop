@@ -16,8 +16,6 @@ import LoginPage from "./components/Login/LoginPage";
 import AuthRoute from "./components/Routes/AuthRoute";
 import HomeRoute from "./components/Routes/HomeRoute";
 
-@inject("ProductsStore", "MsgStore", "UserStore", "CartStore")
-@observer
 class App extends React.Component {
     componentDidUpdate(prevProps) {
         const prevPath = prevProps.location.pathname;
@@ -32,7 +30,6 @@ class App extends React.Component {
         const { isProductsLoaded } = this.props.ProductsStore;
         const { isUserLoaded } = this.props.UserStore;
         const { isCartLoaded } = this.props.CartStore;
-
         if (!isProductsLoaded || !isUserLoaded || !isCartLoaded) {
             return <Loader />;
         }
@@ -59,4 +56,6 @@ class App extends React.Component {
     }
 }
 
-export default withRouter(App);
+export default withRouter(
+    inject("ProductsStore", "MsgStore", "UserStore", "CartStore")(observer(App))
+);

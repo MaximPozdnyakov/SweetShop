@@ -1,8 +1,6 @@
 import React from "react";
 import { observer, inject } from "mobx-react";
 
-@inject("CartStore")
-@observer
 class CartItem extends React.Component {
     deleteCartItem = (e) => {
         e.preventDefault();
@@ -75,4 +73,4 @@ class CartItem extends React.Component {
     }
 }
 
-export default CartItem;
+export default inject("CartStore")(observer(CartItem));

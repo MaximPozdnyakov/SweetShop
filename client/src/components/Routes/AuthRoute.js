@@ -2,8 +2,6 @@ import React from "react";
 import { Route, Redirect } from "react-router-dom";
 import { observer, inject } from "mobx-react";
 
-@inject("UserStore")
-@observer
 class AuthRoute extends React.Component {
     render() {
         const { isAuthenticated } = this.props.UserStore;
@@ -23,4 +21,4 @@ class AuthRoute extends React.Component {
     }
 }
 
-export default AuthRoute;
+export default inject("UserStore")(observer(AuthRoute));

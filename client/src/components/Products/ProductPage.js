@@ -5,8 +5,6 @@ import { If, Then, Else } from "react-if";
 
 import Page404 from "../Page404";
 
-@inject("ProductsStore", "CartStore")
-@observer
 class ProductPage extends React.Component {
     toggleProduct = (e) => {
         e.preventDefault();
@@ -87,4 +85,6 @@ class ProductPage extends React.Component {
     }
 }
 
-export default withRouter(ProductPage);
+export default withRouter(
+    inject("ProductsStore", "CartStore")(observer(ProductPage))
+);

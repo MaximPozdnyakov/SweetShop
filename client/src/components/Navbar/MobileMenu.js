@@ -6,8 +6,6 @@ import { slide as Menu } from "react-burger-menu";
 
 import { If, Else, Then } from "react-if";
 
-@inject("UserStore")
-@observer
 class MobileMenu extends React.Component {
     state = {
         isMenuOpen: false,
@@ -73,4 +71,4 @@ class MobileMenu extends React.Component {
     }
 }
 
-export default MobileMenu;
+export default inject("UserStore")(observer(MobileMenu));

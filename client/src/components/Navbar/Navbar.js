@@ -5,8 +5,6 @@ import { Link } from "react-router-dom";
 import { If, Else, Then } from "react-if";
 import MobileMenu from "./MobileMenu";
 
-@inject("UserStore")
-@observer
 class Navbar extends React.Component {
     handleLogout = (e) => {
         e.preventDefault();
@@ -67,4 +65,4 @@ class Navbar extends React.Component {
     }
 }
 
-export default Navbar;
+export default inject("UserStore")(observer(Navbar));

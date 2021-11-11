@@ -5,8 +5,6 @@ import { If, Then, Else } from "react-if";
 import ListOfCartItems from "./ListOfCartItems";
 import Total from "./Total";
 
-@inject("CartStore")
-@observer
 class Cart extends React.Component {
     render() {
         const { cartItems } = this.props.CartStore;
@@ -30,4 +28,4 @@ class Cart extends React.Component {
     }
 }
 
-export default Cart;
+export default inject("CartStore")(observer(Cart));

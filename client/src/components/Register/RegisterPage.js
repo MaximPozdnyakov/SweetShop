@@ -3,8 +3,6 @@ import { observer, inject } from "mobx-react";
 
 import RegisterForm from "./RegisterForm";
 
-@inject("UserStore")
-@observer
 class RegisterPage extends React.Component {
     render() {
         const { register } = this.props.UserStore;
@@ -18,4 +16,4 @@ class RegisterPage extends React.Component {
     }
 }
 
-export default RegisterPage;
+export default inject("UserStore")(observer(RegisterPage));

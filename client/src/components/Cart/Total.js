@@ -5,8 +5,6 @@ import { If, Then, Else } from "react-if";
 
 import Stripe from "./Stripe";
 
-@inject("ProductsStore", "UserStore", "CartStore")
-@observer
 class Total extends React.Component {
     getTotal = () => {
         const { cartItems } = this.props.CartStore;
@@ -48,4 +46,8 @@ class Total extends React.Component {
     }
 }
 
-export default Total;
+export default inject(
+    "ProductsStore",
+    "UserStore",
+    "CartStore"
+)(observer(Total));

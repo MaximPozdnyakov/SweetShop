@@ -8,8 +8,6 @@ import StripeCheckout from "react-stripe-checkout";
 
 toast.configure({ autoClose: 8000 });
 
-@inject("CartStore")
-@observer
 class Stripe extends React.Component {
     makePurchase = async (token) => {
         const { total } = this.props;
@@ -52,4 +50,4 @@ class Stripe extends React.Component {
     }
 }
 
-export default Stripe;
+export default inject("CartStore")(observer(Stripe));

@@ -3,8 +3,6 @@ import { observer, inject } from "mobx-react";
 
 import Card from "./Card";
 
-@inject("ProductsStore")
-@observer
 class Products extends React.Component {
     render() {
         const { products } = this.props.ProductsStore;
@@ -28,4 +26,4 @@ class Products extends React.Component {
     }
 }
 
-export default Products;
+export default inject("ProductsStore")(observer(Products));

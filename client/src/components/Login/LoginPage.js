@@ -3,8 +3,6 @@ import { observer, inject } from "mobx-react";
 
 import LoginForm from "./LoginForm";
 
-@inject("UserStore")
-@observer
 class LoginPage extends React.Component {
     render() {
         const { login } = this.props.UserStore;
@@ -18,4 +16,4 @@ class LoginPage extends React.Component {
     }
 }
 
-export default LoginPage;
+export default inject("UserStore")(observer(LoginPage));

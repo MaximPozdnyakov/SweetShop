@@ -3,8 +3,6 @@ import { observer, inject } from "mobx-react";
 import { Link } from "react-router-dom";
 import { If, Then, Else } from "react-if";
 
-@inject("CartStore")
-@observer
 class Card extends React.Component {
     toggleProduct = (e) => {
         e.preventDefault();
@@ -66,4 +64,4 @@ class Card extends React.Component {
     }
 }
 
-export default Card;
+export default inject("CartStore")(observer(Card));

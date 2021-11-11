@@ -1,5 +1,4 @@
 import React from "react";
-import { observer, inject } from "mobx-react";
 import { withFormik } from "formik";
 import { Link, Redirect } from "react-router-dom";
 
@@ -9,8 +8,6 @@ import PasswordField from "../Utils/PasswordField";
 import ConfirmationPasswordField from "./ConfirmationPasswordField";
 import GoogleRegisterBtn from "./GoogleRegisterBtn";
 
-@inject("UserStore")
-@observer
 class RegisterForm extends React.Component {
     render() {
         const { email, password, confirmationPassword } = this.props.values;

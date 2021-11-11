@@ -1,8 +1,6 @@
 import React from "react";
 import { observer, inject } from "mobx-react";
 
-@inject("MsgStore")
-@observer
 class AlertDanger extends React.Component {
     closeAlert = () => {
         const { setMsg } = this.props.MsgStore;
@@ -39,4 +37,4 @@ class AlertDanger extends React.Component {
     }
 }
 
-export default AlertDanger;
+export default inject("MsgStore")(observer(AlertDanger));

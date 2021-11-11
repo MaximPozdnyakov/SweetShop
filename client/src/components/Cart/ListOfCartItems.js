@@ -3,8 +3,6 @@ import { observer, inject } from "mobx-react";
 
 import CartItem from "./CartItem";
 
-@inject("ProductsStore", "CartStore")
-@observer
 class ListOfCardItems extends React.Component {
     render() {
         const { cartItems } = this.props.CartStore;
@@ -33,4 +31,4 @@ class ListOfCardItems extends React.Component {
     }
 }
 
-export default ListOfCardItems;
+export default inject("ProductsStore", "CartStore")(observer(ListOfCardItems));
