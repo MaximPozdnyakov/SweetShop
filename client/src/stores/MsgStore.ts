@@ -1,11 +1,17 @@
 import { makeAutoObservable } from "mobx";
 
-class MsgStore {
+interface IMsgStore {
+    msg: string;
+}
+
+class MsgStore implements IMsgStore {
     constructor() {
         makeAutoObservable(this);
     }
     msg = "";
-    setMsg = (msg) => (this.msg = msg);
+    setMsg = (msg: string) => {
+        this.msg = msg;
+    };
 }
 
 export default MsgStore;
