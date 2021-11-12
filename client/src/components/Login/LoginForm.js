@@ -70,8 +70,8 @@ export default withFormik({
         if (!password) setFieldError("password", requiredMsg);
         if (!email || !password) return;
         const { login } = props;
-        const user = await login({ email, password });
-        if (!user.msg) return <Redirect to="/store" />;
+        const msg = await login({ email, password });
+        if (!msg) return <Redirect to="/store" />;
         resetForm({ values: { email, password } });
     },
 
