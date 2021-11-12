@@ -1,6 +1,11 @@
 import React from "react";
 import { observer, inject } from "mobx-react";
-import { Switch, Route, withRouter } from "react-router-dom";
+import {
+    Switch,
+    Route,
+    withRouter,
+    RouteComponentProps,
+} from "react-router-dom";
 
 import Loader from "./components/Utils/Loader";
 import Navbar from "./components/Navbar/Navbar";
@@ -16,20 +21,32 @@ import LoginPage from "./components/Login/LoginPage";
 import AuthRoute from "./components/Routes/AuthRoute";
 import HomeRoute from "./components/Routes/HomeRoute";
 
-class App extends React.Component {
-    componentDidUpdate(prevProps) {
+import ProductsStore from "./stores/ProductsStore";
+import UserStore from "./stores/UserStore";
+import CartStore from "./stores/CartStore";
+import MsgStore from "./stores/MsgStore";
+interface IProps extends RouteComponentProps {
+    ProductsStore?: ProductsStore;
+    UserStore?: UserStore;
+    CartStore?: CartStore;
+    MsgStore?: MsgStore;
+}
+
+class App extends React.Component<IProps> {
+    componentDidUpdate(prevProps: IProps) {
         const prevPath = prevProps.location.pathname;
         const currentPath = this.props.location.pathname;
         if (currentPath !== prevPath) {
-            this.props.MsgStore.setMsg("");
+            const { setMsg } = this.props.MsgStore!;
+            setMsg("");
             window.scrollTo(0, 0);
         }
     }
 
     render() {
-        const { isProductsLoaded } = this.props.ProductsStore;
-        const { isUserLoaded } = this.props.UserStore;
-        const { isCartLoaded } = this.props.CartStore;
+        const { isProductsLoaded } = this.props.ProductsStore!;
+        const { isUserLoaded } = this.props.UserStore!;
+        const { isCartLoaded } = this.props.CartStore!;
         if (!isProductsLoaded || !isUserLoaded || !isCartLoaded) {
             return <Loader />;
         }
