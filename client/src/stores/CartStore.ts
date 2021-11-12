@@ -2,7 +2,7 @@ import { makeAutoObservable, reaction, runInAction } from "mobx";
 import axios from "axios";
 import UserStore from "./UserStore";
 
-interface ICartItem {
+export interface ICartItem {
     __v?: number;
     _id?: string;
     productId: string;
