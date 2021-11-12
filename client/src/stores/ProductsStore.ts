@@ -1,7 +1,7 @@
 import { when, makeAutoObservable } from "mobx";
 import axios from "axios";
 
-interface IProduct {
+export interface IProduct {
     __v: number;
     _id: string;
     category: string;
