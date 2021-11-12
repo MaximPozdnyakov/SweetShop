@@ -3,14 +3,22 @@ import { observer, inject } from "mobx-react";
 
 import CartItem from "./CartItem";
 
-class ListOfCardItems extends React.Component {
+import ProductsStore from "../../stores/ProductsStore";
+import CartStore from "../../stores/CartStore";
+interface IProps {
+    ProductsStore?: ProductsStore;
+    CartStore?: CartStore;
+}
+
+class ListOfCardItems extends React.Component<IProps> {
     render() {
-        const { cartItems } = this.props.CartStore;
-        const { products } = this.props.ProductsStore;
+        const { cartItems } = this.props.CartStore!;
+        const { products } = this.props.ProductsStore!;
         const cartItemsComponents = cartItems.map((item) => {
             const product = products.find(
                 (product) => product._id === item.productId
             );
+            if (!product) return null;
             return (
                 <CartItem
                     productId={item.productId}

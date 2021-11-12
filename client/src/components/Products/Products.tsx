@@ -3,9 +3,14 @@ import { observer, inject } from "mobx-react";
 
 import Card from "./Card";
 
-class Products extends React.Component {
+import ProductsStore from "../../stores/ProductsStore";
+interface IProps {
+    ProductsStore?: ProductsStore;
+}
+
+class Products extends React.Component<IProps> {
     render() {
-        const { products } = this.props.ProductsStore;
+        const { products } = this.props.ProductsStore!;
         const cards = products.map((product) => (
             <Card
                 id={product._id}

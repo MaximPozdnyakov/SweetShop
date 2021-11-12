@@ -6,7 +6,17 @@ import { slide as Menu } from "react-burger-menu";
 
 import { If, Else, Then } from "react-if";
 
-class MobileMenu extends React.Component {
+import UserStore from "../../stores/UserStore";
+interface IProps {
+    UserStore?: UserStore;
+    handleLogout: (e: React.MouseEvent<HTMLAnchorElement>) => void;
+}
+
+interface IState {
+    isMenuOpen: boolean;
+}
+
+class MobileMenu extends React.Component<IProps, IState> {
     state = {
         isMenuOpen: false,
     };
@@ -15,7 +25,7 @@ class MobileMenu extends React.Component {
         this.setState(({ isMenuOpen }) => ({ isMenuOpen: !isMenuOpen }));
 
     render() {
-        const { isAuthenticated } = this.props.UserStore;
+        const { isAuthenticated } = this.props.UserStore!;
         const { isMenuOpen } = this.state;
         return (
             <Menu
@@ -34,8 +44,8 @@ class MobileMenu extends React.Component {
                 <If condition={isAuthenticated}>
                     <Then>
                         <Link
-                            onClick={() => {
-                                this.props.handleLogout();
+                            onClick={(e) => {
+                                this.props.handleLogout(e);
                                 this.toggleMenu();
                             }}
                             className="mb-3 bm-item"

@@ -1,17 +1,20 @@
 import React from "react";
 import { observer, inject } from "mobx-react";
 
-class AlertDanger extends React.Component {
+import MsgStore from "../../stores/MsgStore";
+interface IProps {
+    MsgStore?: MsgStore;
+}
+
+class AlertDanger extends React.Component<IProps> {
     closeAlert = () => {
-        const { setMsg } = this.props.MsgStore;
+        const { setMsg } = this.props.MsgStore!;
         setMsg("");
     };
 
     render() {
-        const { msg } = this.props.MsgStore;
-        if (msg === "") {
-            return null;
-        }
+        const { msg } = this.props.MsgStore!;
+        if (msg === "") return null;
         return (
             <div
                 className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative"

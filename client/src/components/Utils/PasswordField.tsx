@@ -1,6 +1,12 @@
 import React from "react";
 
-class PasswordField extends React.Component {
+interface IProps {
+    password: string;
+    error: string[] | string | undefined;
+    handleChange: (e: React.ChangeEvent<any>) => void;
+}
+
+class PasswordField extends React.Component<IProps> {
     getInputClassName = () => {
         const { error } = this.props;
         let className =

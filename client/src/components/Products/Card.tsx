@@ -3,10 +3,20 @@ import { observer, inject } from "mobx-react";
 import { Link } from "react-router-dom";
 import { If, Then, Else } from "react-if";
 
-class Card extends React.Component {
-    toggleProduct = (e) => {
+import CartStore, { ICartItem } from "../../stores/CartStore";
+interface IProps {
+    CartStore?: CartStore;
+    id: string;
+    title: string;
+    category: string;
+    srcToImg: string;
+    price: number;
+}
+
+class Card extends React.Component<IProps> {
+    toggleProduct = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
-        const { addCartItem, deleteCartItem } = this.props.CartStore;
+        const { addCartItem, deleteCartItem } = this.props.CartStore!;
         const productId = this.props.id;
         const cartItem = this.getCartItem();
         if (!cartItem) {
@@ -16,8 +26,8 @@ class Card extends React.Component {
         }
     };
 
-    getCartItem = () => {
-        const { cartItems } = this.props.CartStore;
+    getCartItem = (): ICartItem | undefined => {
+        const { cartItems } = this.props.CartStore!;
         const productId = this.props.id;
         return cartItems.find((item) => item.productId === productId);
     };

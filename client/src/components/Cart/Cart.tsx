@@ -5,9 +5,14 @@ import { If, Then, Else } from "react-if";
 import ListOfCartItems from "./ListOfCartItems";
 import Total from "./Total";
 
-class Cart extends React.Component {
+import CartStore from "../../stores/CartStore";
+interface IProps {
+    CartStore?: CartStore;
+}
+
+class Cart extends React.Component<IProps> {
     render() {
-        const { cartItems } = this.props.CartStore;
+        const { cartItems } = this.props.CartStore!;
         return (
             <section className="text-gray-700 body-font">
                 <div className="container mx-auto flex mt-24 md:flex-row flex-col-reverse">

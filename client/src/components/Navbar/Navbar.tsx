@@ -5,18 +5,21 @@ import { Link } from "react-router-dom";
 import { If, Else, Then } from "react-if";
 import MobileMenu from "./MobileMenu";
 
-class Navbar extends React.Component {
-    handleLogout = (e) => {
+import UserStore from "../../stores/UserStore";
+interface IProps {
+    UserStore?: UserStore;
+}
+
+class Navbar extends React.Component<IProps> {
+    handleLogout = (e: React.MouseEvent<HTMLAnchorElement>) => {
         e.preventDefault();
-        const { user, googleLogout, logout } = this.props.UserStore;
-        if (user.googleId) {
-            googleLogout();
-        } else {
-            logout();
-        }
+        const { user, googleLogout, logout } = this.props.UserStore!;
+        if (user.googleId) googleLogout();
+        else logout();
     };
 
     render() {
+        const { isAuthenticated } = this.props.UserStore!;
         return (
             <header className="bg-pink-500 text-white body-font fixed inset-x-0 top-0 z-50">
                 <div className="flex flex-wrap pt-3 px-5 flex-col md:flex-row items-start md:items-center">
@@ -33,7 +36,7 @@ class Navbar extends React.Component {
                         <Link to="/store" className="mr-5 pb-3">
                             Store
                         </Link>
-                        <If condition={this.props.UserStore.isAuthenticated}>
+                        <If condition={isAuthenticated}>
                             <Then>
                                 <Link
                                     onClick={this.handleLogout}

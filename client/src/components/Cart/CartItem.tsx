@@ -1,18 +1,32 @@
 import React from "react";
 import { observer, inject } from "mobx-react";
 
-class CartItem extends React.Component {
-    deleteCartItem = (e) => {
+import CartStore from "../../stores/CartStore";
+interface IProps {
+    CartStore?: CartStore;
+    productId: string;
+    title: string;
+    category: string;
+    price: number;
+    srcToImg: string;
+    quantity: number;
+}
+
+class CartItem extends React.Component<IProps> {
+    deleteCartItem = (e: React.MouseEvent<HTMLDivElement>) => {
         e.preventDefault();
         const { productId } = this.props;
-        const { deleteCartItem } = this.props.CartStore;
+        const { deleteCartItem } = this.props.CartStore!;
         deleteCartItem({ productId });
     };
 
-    changeQuantityBy = (e, difference) => {
+    changeQuantityBy = (
+        e: React.MouseEvent<HTMLDivElement>,
+        difference: number
+    ) => {
         e.preventDefault();
         const { quantity, productId } = this.props;
-        const { updateQuantityOfItem } = this.props.CartStore;
+        const { updateQuantityOfItem } = this.props.CartStore!;
         const newQuantity = quantity + difference;
         if (newQuantity >= 1) {
             updateQuantityOfItem({ productId, quantity: newQuantity });

@@ -1,7 +1,13 @@
 import React from "react";
 import { When } from "react-if";
 
-class ConfirmationPasswordField extends React.Component {
+interface IProps {
+    confirmationPassword: string;
+    error: string | undefined;
+    handleChange: (e: React.ChangeEvent<any>) => void;
+}
+
+class ConfirmationPasswordField extends React.Component<IProps> {
     getInputClassName = () => {
         const { error } = this.props;
         let className =

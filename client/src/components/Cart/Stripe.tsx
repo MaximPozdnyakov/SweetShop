@@ -1,32 +1,38 @@
 import React from "react";
 import { observer, inject } from "mobx-react";
-import { toast } from "react-toastify";
+import { toast, ToastPosition } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Redirect } from "react-router-dom";
 
-import StripeCheckout from "react-stripe-checkout";
+import StripeCheckout, { Token } from "react-stripe-checkout";
+
+import CartStore from "../../stores/CartStore";
+interface IProps {
+    CartStore?: CartStore;
+    total: number;
+}
 
 toast.configure({ autoClose: 8000 });
 
-class Stripe extends React.Component {
-    makePurchase = async (token) => {
+class Stripe extends React.Component<IProps> {
+    makePurchase = async (token: Token) => {
         const { total } = this.props;
-        const { deleteItemsByOwner, makePurchase } = this.props.CartStore;
+        const { deleteAllCartItems, makePurchase } = this.props.CartStore!;
         const status = await makePurchase({
-            token,
+            token: String(token),
             total,
         });
         if (status === "success") {
-            deleteItemsByOwner();
+            deleteAllCartItems();
             toast("Success! Check emails for details", {
                 type: "success",
-                position: toast.POSITION.BOTTOM_RIGHT,
+                position: toast.POSITION.BOTTOM_RIGHT as ToastPosition,
             });
             return <Redirect to="/" />;
         } else {
             toast("Something went wrong", {
                 type: "error",
-                position: toast.POSITION.BOTTOM_RIGHT,
+                position: toast.POSITION.BOTTOM_RIGHT as ToastPosition,
             });
         }
     };

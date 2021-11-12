@@ -1,12 +1,19 @@
 import React from "react";
-import { withFormik } from "formik";
+import { withFormik, FormikProps } from "formik";
 import { Link, Redirect } from "react-router-dom";
 
 import AlertDanger from "../Utils/AlertDanger";
 import EmailField from "../Utils/EmailField";
 import PasswordField from "../Utils/PasswordField";
 
-class LoginForm extends React.Component {
+import UserStore, { LoginCredentials } from "../../stores/UserStore";
+interface IProps {
+    login: UserStore["login"];
+}
+
+class LoginForm extends React.Component<
+    IProps & FormikProps<LoginCredentials>
+> {
     render() {
         const { email, password } = this.props.values;
         const errors = this.props.errors;
@@ -45,14 +52,15 @@ class LoginForm extends React.Component {
     }
 }
 
-export default withFormik({
+export default withFormik<IProps, LoginCredentials>({
     mapPropsToValues: () => ({
         email: "",
         password: "",
     }),
 
     validate: ({ email }) => {
-        const errors = {};
+        type LoginErrors = { email?: string };
+        const errors: LoginErrors = {};
         //eslint-disable-next-line
         const emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
         if (!(email === "" || emailRegex.test(email.toLowerCase()))) {
@@ -69,7 +77,7 @@ export default withFormik({
         if (!email) setFieldError("email", requiredMsg);
         if (!password) setFieldError("password", requiredMsg);
         if (!email || !password) return;
-        const { login } = props;
+        const { login } = props as IProps;
         const msg = await login({ email, password });
         if (!msg) return <Redirect to="/store" />;
         resetForm({ values: { email, password } });

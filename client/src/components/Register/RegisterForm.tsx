@@ -1,5 +1,5 @@
 import React from "react";
-import { withFormik } from "formik";
+import { withFormik, FormikProps } from "formik";
 import { Link, Redirect } from "react-router-dom";
 
 import AlertDanger from "../Utils/AlertDanger";
@@ -8,7 +8,21 @@ import PasswordField from "../Utils/PasswordField";
 import ConfirmationPasswordField from "./ConfirmationPasswordField";
 import GoogleRegisterBtn from "./GoogleRegisterBtn";
 
-class RegisterForm extends React.Component {
+import UserStore from "../../stores/UserStore";
+
+type RegisterCredentials = {
+    email: string;
+    password: string;
+    confirmationPassword: string;
+};
+
+interface IProps {
+    register: UserStore["register"];
+}
+
+class RegisterForm extends React.Component<
+    IProps & FormikProps<RegisterCredentials>
+> {
     render() {
         const { email, password, confirmationPassword } = this.props.values;
         const errors = this.props.errors;
@@ -55,7 +69,7 @@ class RegisterForm extends React.Component {
     }
 }
 
-export default withFormik({
+export default withFormik<IProps, RegisterCredentials>({
     mapPropsToValues: () => ({
         email: "",
         password: "",
@@ -63,7 +77,12 @@ export default withFormik({
     }),
 
     validate: ({ email, password, confirmationPassword }) => {
-        const errors = {};
+        type RegisterErrors = {
+            email?: string;
+            password?: string | string[];
+            confirmationPassword?: string;
+        };
+        const errors: RegisterErrors = {};
         //eslint-disable-next-line
         const emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
         if (!(email === "" || emailRegex.test(email.toLowerCase()))) {

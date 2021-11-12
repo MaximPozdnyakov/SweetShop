@@ -1,40 +1,45 @@
 import React from "react";
 import { observer, inject } from "mobx-react";
-import { withRouter } from "react-router-dom";
+import { withRouter, RouteComponentProps } from "react-router-dom";
 import { If, Then, Else } from "react-if";
 
 import Page404 from "../Page404";
 
-class ProductPage extends React.Component {
-    toggleProduct = (e) => {
+import ProductsStore, { IProduct } from "../../stores/ProductsStore";
+import CartStore from "../../stores/CartStore";
+interface RouteParams {
+    id: string;
+}
+interface IProps extends RouteComponentProps<RouteParams> {
+    ProductsStore?: ProductsStore;
+    CartStore?: CartStore;
+}
+
+class ProductPage extends React.Component<IProps> {
+    toggleProduct = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
-        const { addCartItem, deleteCartItem } = this.props.CartStore;
+        const { addCartItem, deleteCartItem } = this.props.CartStore!;
         const productId = this.props.match.params.id;
         const cartItem = this.getCartItem();
-        if (!cartItem) {
-            addCartItem({ productId });
-        } else {
-            deleteCartItem({ productId });
-        }
+        if (!cartItem) addCartItem({ productId });
+        else deleteCartItem({ productId });
     };
 
     getCartItem = () => {
-        const { cartItems } = this.props.CartStore;
+        const { cartItems } = this.props.CartStore!;
         const productId = this.props.match.params.id;
         return cartItems.find((item) => item.productId === productId);
     };
 
-    getProduct = () => {
-        const { products } = this.props.ProductsStore;
+    getProduct = (): IProduct | undefined => {
+        const { products } = this.props.ProductsStore!;
         const productId = this.props.match.params.id;
         return products.find((product) => product._id === productId);
     };
 
     render() {
         const product = this.getProduct();
-        if (!product) {
-            return <Page404 />;
-        }
+        if (!product) return <Page404 />;
         const { title, price, srcToImg } = product;
         const cartItem = this.getCartItem();
         return (
