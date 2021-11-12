@@ -94,12 +94,12 @@ export default withFormik({
             setFieldError("confirmationPassword", requiredMsg);
         if (!email || !password || !confirmationPassword) return;
         const { register } = props;
-        const user = await register({
+        const msg = await register({
             email,
             password1: password,
             password2: confirmationPassword,
         });
-        if (!user.msg) return <Redirect to="/store" />;
+        if (!msg) return <Redirect to="/store" />;
         resetForm({ values: { email, password, confirmationPassword } });
     },
     displayName: "FormikRegister",
