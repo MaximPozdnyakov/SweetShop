@@ -1,9 +1,40 @@
 import { when, makeAutoObservable } from "mobx";
 import axios from "axios";
 import { v4 as uuidv4 } from "uuid";
+import MsgStore from "./MsgStore";
 
-class UserStore {
-    constructor(props) {
+type LoginCredentials = { email: string; password: string };
+type RegisterCredentials = {
+    email: string;
+    password1: string;
+    password2: string;
+};
+type AccessResponse = {
+    data: { msg?: string; token?: string; user?: IUser };
+};
+
+interface IUser {
+    __v: number;
+    _id: string;
+    email: string;
+    password: string;
+    created_at: string;
+}
+
+interface IUserStore {
+    user: IUser;
+    isUserLoaded: boolean;
+    isAuthenticated: boolean;
+    MsgStore: MsgStore;
+}
+
+class UserStore implements IUserStore {
+    MsgStore;
+    user = {} as IUser;
+    isUserLoaded = false;
+    isAuthenticated = false;
+
+    constructor(props: { MsgStore: MsgStore }) {
         makeAutoObservable(this);
         this.MsgStore = props.MsgStore;
         when(
@@ -12,29 +43,30 @@ class UserStore {
         );
     }
 
-    user = {};
-    isUserLoaded = false;
-    isAuthenticated = false;
-
     async fetchUser() {
+        type UserResponse = { data: { msg?: string; user?: IUser } };
         try {
             if (localStorage.getItem("token")) {
-                const user = await axios.get("/api/users", {
+                const {
+                    data: { msg, user },
+                }: UserResponse = await axios.get("/api/users", {
                     headers: {
                         Authorization: `Bearer ${localStorage.getItem(
                             "token"
                         )}`,
                     },
                 });
-                if (!user.data.msg) {
-                    this.setUser(user.data.user);
+                if (!msg && user) {
+                    this.setUser(user);
                     return;
                 }
                 localStorage.removeItem("token");
             }
-            const user = await axios.get("/api/google-auth/login");
-            if (!user.data.msg) {
-                this.setUser(user.data.user);
+            const {
+                data: { msg, user },
+            }: UserResponse = await axios.get("/api/google-auth/login");
+            if (!msg && user) {
+                this.setUser(user);
                 return;
             }
             if (!localStorage.getItem("guest")) {
@@ -44,33 +76,40 @@ class UserStore {
         } catch (e) {}
     }
 
-    login = async (credentials) => {
+    login = async (credentials: LoginCredentials) => {
         try {
             this.setUserNotLoaded();
-            const user = await axios.post("/api/users/login", credentials);
-            if (!user.data.msg) {
-                localStorage.setItem("token", user.data.token);
-                this.setUser(user.data.user);
-                return user;
+            const {
+                data: { msg, token, user },
+            }: AccessResponse = await axios.post(
+                "/api/users/login",
+                credentials
+            );
+            if (!msg && token && user) {
+                localStorage.setItem("token", token);
+                this.setUser(user);
+                return msg;
             }
-            this.MsgStore.setMsg(user.data.msg);
+            if (msg) this.MsgStore.setMsg(msg);
             this.setUserLoaded();
-            return user.data;
+            return msg;
         } catch (e) {}
     };
 
-    register = async (credentials) => {
+    register = async (credentials: RegisterCredentials) => {
         try {
             this.setUserNotLoaded();
-            const newUser = await axios.post("/api/users", credentials);
-            if (!newUser.data.msg) {
-                localStorage.setItem("token", newUser.data.token);
-                this.setUser(newUser.data.user);
-                return newUser;
+            const {
+                data: { msg, token, user },
+            }: AccessResponse = await axios.post("/api/users", credentials);
+            if (!msg && token && user) {
+                localStorage.setItem("token", token);
+                this.setUser(user);
+                return msg;
             }
-            this.MsgStore.setMsg(newUser.data.msg);
+            if (msg) this.MsgStore.setMsg(msg);
             this.setUserLoaded();
-            return newUser.data;
+            return msg;
         } catch (e) {}
     };
 
@@ -103,7 +142,7 @@ class UserStore {
         } catch (e) {}
     };
 
-    setUser(user) {
+    setUser(user: IUser) {
         this.user = user;
         this.isAuthenticated = true;
         this.isUserLoaded = true;
@@ -119,14 +158,12 @@ class UserStore {
 
     setUserLogout() {
         this.isAuthenticated = false;
-        this.user = {};
+        this.user = {} as IUser;
     }
 
-    get userId() {
-        if (Object.keys(this.user).length) {
-            return this.user._id;
-        }
-        return localStorage.getItem("guest");
+    get userId(): string {
+        if (this.user._id) return this.user._id;
+        return String(localStorage.getItem("guest"));
     }
 }
 
