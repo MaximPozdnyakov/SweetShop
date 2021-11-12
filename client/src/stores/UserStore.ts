@@ -3,7 +3,7 @@ import axios from "axios";
 import { v4 as uuidv4 } from "uuid";
 import MsgStore from "./MsgStore";
 
-type LoginCredentials = { email: string; password: string };
+export type LoginCredentials = { email: string; password: string };
 type RegisterCredentials = {
     email: string;
     password1: string;
@@ -19,6 +19,7 @@ interface IUser {
     email: string;
     password: string;
     created_at: string;
+    googleId?: string;
 }
 
 interface IUserStore {
