@@ -19,7 +19,7 @@
         "react-burger-menu": "^2.7.1",
         "react-dom": "^16.13.1",
         "react-if": "^3.4.3",
-        "react-loader-spinner": "^3.1.14",
+        "react-loader-spinner": "^4.0.0",
         "react-router-dom": "^5.1.2",
         "react-scripts": "^3.2.0",
         "react-stripe-checkout": "^2.6.3",
@@ -51,6 +51,7 @@
     "proxy": "https://sweety-shop.herokuapp.com",
     "secure": false,
     "devDependencies": {
+        "@types/react-burger-menu": "^2.8.2",
         "@types/uuid": "^8.3.1",
         "autoprefixer": "^9.8.6",
         "postcss-cli": "^7.1.1"
