@@ -54,7 +54,7 @@ class Total extends React.Component<IProps> {
 }
 
 export default inject(
-    "!ProductsStore",
+    "ProductsStore",
     "UserStore",
     "CartStore"
 )(observer(Total));
