@@ -2,6 +2,7 @@
 Интернет магазин кондитерских изделий
 ## Стек
 - React
+- MobX
 - Tailwind
 - Node.js
 - MongoDB
