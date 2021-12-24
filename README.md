@@ -3,6 +3,7 @@
 ## Стек
 - React
 - MobX
+- TypeScript
 - Tailwind
 - Node.js
 - MongoDB
